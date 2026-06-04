@@ -1,0 +1,812 @@
+[
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "Who are the Artemis II crew members?",
+    "top_chunk": "the mission all the best on the NASA live broadcast at launch in a pre-recorded message, joining Scarlett Johansson (Fly Me to the Moon), Stanley Tucci, Victor Wembanyama, Isaac Mattson, and Roy Wood Jr. in sending their regards. On social media during the mission, an observation by the audience of ",
+    "relevance_score": 0.1984,
+    "latency_ms": 36.25,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "How does the Orion spacecraft life support work?",
+    "top_chunk": "manufactured by Airbus Defence and Space. Capable of supporting a crew of six beyond low Earth orbit, Orion is equipped with solar panels, an automated docking system, and glass cockpit interfaces modeled after those used in the Boeing 787 Dreamliner. It has a single AJ10 engine for primary propulsi",
+    "relevance_score": 0.1837,
+    "latency_ms": 19.88,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "What is the purpose of the Lunar Gateway?",
+    "top_chunk": "The Lunar Gateway was a planned space station that would have been assembled in orbit around the Moon as part of the Artemis program. Derived from earlier concepts such as the Exploration Gateway Platform, it was developed from 2017 until 2026, when the leading space agency NASA shifted focus to dev",
+    "relevance_score": 0.212,
+    "latency_ms": 6.0,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "When is the Artemis II mission launching?",
+    "top_chunk": "rocket, Orion spacecraft, and supporting ground systems while maintaining crew safety as the top priority.\" By August 2025, more mainstream outlets such as NASASpaceflight, journalist Eric Berger and U.S. Senator and former astronaut Mark Kelly also reported that the mission had been moved to Februa",
+    "relevance_score": 0.3596,
+    "latency_ms": 4.51,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "What rocket does Artemis use?",
+    "top_chunk": "The Space Launch System (SLS) is an American two-stage super heavy-lift expendable launch vehicle used by NASA. The primary launch vehicle for the Artemis program, SLS is designed to launch the four-person Orion spacecraft for missions to the Moon, on a trans-lunar injection trajectory. The rocket f",
+    "relevance_score": 0.1103,
+    "latency_ms": 20.39,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "How do the Orion spacecraft and Space Launch System work together and what are the risks if one fails?",
+    "top_chunk": "manufactured by Airbus Defence and Space. Capable of supporting a crew of six beyond low Earth orbit, Orion is equipped with solar panels, an automated docking system, and glass cockpit interfaces modeled after those used in the Boeing 787 Dreamliner. It has a single AJ10 engine for primary propulsi",
+    "relevance_score": 0.2654,
+    "latency_ms": 18.78,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "Compare the roles of Reid Wiseman and Jeremy Hansen on the Artemis II mission",
+    "top_chunk": "Hansen formally requested that a newly discovered crater on the Moon be named Carroll, after Wiseman's late wife. Honors In June 2026, the Baltimore County Council honored Wiseman with a resolution honoring him and his contributions to the Artemis II mission. Baltimore County Executive Kathy Klausme",
+    "relevance_score": 0.2329,
+    "latency_ms": 17.67,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "Is Artemis II ready to launch?",
+    "top_chunk": "The Artemis program is a Moon exploration program led by the United States' National Aeronautics and Space Administration (NASA), aimed at returning humans to the Moon for the first time since the Apollo program and building a permanent lunar base. It was formally established via Space Policy Direct",
+    "relevance_score": 0.3396,
+    "latency_ms": 20.26,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "What could go wrong during the trans-lunar injection burn?",
+    "top_chunk": "tests of Orion's ability to manually maneuver relative to another spacecraft using onboard navigation sensors and reaction control thrusters. Following the demonstration, Orion returned to automated control while the ICPS performed a deorbit burn for destructive reentry over the Pacific Ocean, deplo",
+    "relevance_score": 0.0079,
+    "latency_ms": 21.92,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "How does the Orion crew module handle thermal protection during re-entry?",
+    "top_chunk": "NASA held a press briefing to outline its findings, but the publicly released version of the review team's report was heavily redacted, prompting criticism from some former NASA engineers and astronauts regarding the level of transparency. NASA engineers determined that the char loss observed during",
+    "relevance_score": 0.259,
+    "latency_ms": 20.71,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "What propulsion systems does the Space Launch System use?",
+    "top_chunk": "The Space Launch System (SLS) is an American two-stage super heavy-lift expendable launch vehicle used by NASA. The primary launch vehicle for the Artemis program, SLS is designed to launch the four-person Orion spacecraft for missions to the Moon, on a trans-lunar injection trajectory. The rocket f",
+    "relevance_score": -0.0088,
+    "latency_ms": 27.88,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "What are the key milestones between Artemis I and Artemis III?",
+    "top_chunk": "The Artemis program is a Moon exploration program led by the United States' National Aeronautics and Space Administration (NASA), aimed at returning humans to the Moon for the first time since the Apollo program and building a permanent lunar base. It was formally established via Space Policy Direct",
+    "relevance_score": 0.2061,
+    "latency_ms": 22.42,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "What happened after the Artemis I splashdown that led to Artemis II?",
+    "top_chunk": "August 2025, the thrust structure was completed and moved to storage in the Vehicle Assembly Building at Kennedy, to await the rest of the stage's arrival in mid-2026. The liquid hydrogen tank for Artemis III was originally planned to be the Artemis I tank, but it was set aside as the welds were fou",
+    "relevance_score": 0.3142,
+    "latency_ms": 5.18,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "What is Jeremy Hansen's background and why was he selected for Artemis II?",
+    "top_chunk": "Jeremy Roger Hansen (born January 27, 1976) is a Royal Canadian Air Force colonel and CSA astronaut. As a mission specialist on Artemis II in April 2026, he became the first person not from the United States to travel beyond low Earth orbit and the first to travel to the vicinity of the Moon. He is ",
+    "relevance_score": 0.0783,
+    "latency_ms": 17.09,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "query": "How does Jeremy Hansen's CSA training differ from NASA astronaut training?",
+    "top_chunk": "Jeremy Roger Hansen (born January 27, 1976) is a Royal Canadian Air Force colonel and CSA astronaut. As a mission specialist on Artemis II in April 2026, he became the first person not from the United States to travel beyond low Earth orbit and the first to travel to the vicinity of the Moon. He is ",
+    "relevance_score": 0.0654,
+    "latency_ms": 4.63,
+    "embed_time_s": 0.18
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "Who are the Artemis II crew members?",
+    "top_chunk": "Victor Glover, and mission specialist Christina Koch, all from the NASA Astronaut Corps, along with mission specialist Jeremy Hansen from the Canadian Astronaut Corps. On November 22, 2023, Jenni Gibbons was named as Hansen's backup, and on July 3, 2024, Andre Douglas was named as the backup for the",
+    "relevance_score": 0.112,
+    "latency_ms": 47.46,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "How does the Orion spacecraft life support work?",
+    "top_chunk": "inside a fully enclosed 5-square-foot (0.46 m2) compartment for privacy that uses airflow to manage liquid and solid waste. Solid waste is stored in sealed containers, while treated liquid waste is vented overboard. The potable water dispenser supplies water for rehydrating food, preparing drinks, a",
+    "relevance_score": 0.2977,
+    "latency_ms": 26.02,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "What is the purpose of the Lunar Gateway?",
+    "top_chunk": "The Lunar Gateway was a planned space station that would have been assembled in orbit around the Moon as part of the Artemis program. Derived from earlier concepts such as the Exploration Gateway Platform, it was developed from 2017 until 2026, when the leading space agency NASA shifted focus to dev",
+    "relevance_score": 0.426,
+    "latency_ms": 8.55,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "When is the Artemis II mission launching?",
+    "top_chunk": "August 2025, the thrust structure was completed and moved to storage in the Vehicle Assembly Building at Kennedy, to await the rest of the stage's arrival in mid-2026. The liquid hydrogen tank for Artemis III was originally planned to be the Artemis I tank, but it was set aside as the welds were fou",
+    "relevance_score": 0.3162,
+    "latency_ms": 7.34,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "What rocket does Artemis use?",
+    "top_chunk": "The Space Launch System (SLS) is an American two-stage super heavy-lift expendable launch vehicle used by NASA. The primary launch vehicle for the Artemis program, SLS is designed to launch the four-person Orion spacecraft for missions to the Moon, on a trans-lunar injection trajectory. The rocket f",
+    "relevance_score": 0.1544,
+    "latency_ms": 26.29,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "How do the Orion spacecraft and Space Launch System work together and what are the risks if one fails?",
+    "top_chunk": "inside a fully enclosed 5-square-foot (0.46 m2) compartment for privacy that uses airflow to manage liquid and solid waste. Solid waste is stored in sealed containers, while treated liquid waste is vented overboard. The potable water dispenser supplies water for rehydrating food, preparing drinks, a",
+    "relevance_score": 0.2389,
+    "latency_ms": 25.86,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "Compare the roles of Reid Wiseman and Jeremy Hansen on the Artemis II mission",
+    "top_chunk": "Victor Glover, and mission specialist Christina Koch, all from the NASA Astronaut Corps, along with mission specialist Jeremy Hansen from the Canadian Astronaut Corps. On November 22, 2023, Jenni Gibbons was named as Hansen's backup, and on July 3, 2024, Andre Douglas was named as the backup for the",
+    "relevance_score": 0.2578,
+    "latency_ms": 22.12,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "Is Artemis II ready to launch?",
+    "top_chunk": "August 2025, the thrust structure was completed and moved to storage in the Vehicle Assembly Building at Kennedy, to await the rest of the stage's arrival in mid-2026. The liquid hydrogen tank for Artemis III was originally planned to be the Artemis I tank, but it was set aside as the welds were fou",
+    "relevance_score": 0.2971,
+    "latency_ms": 25.06,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "What could go wrong during the trans-lunar injection burn?",
+    "top_chunk": "tests of Orion's ability to manually maneuver relative to another spacecraft using onboard navigation sensors and reaction control thrusters. Following the demonstration, Orion returned to automated control while the ICPS performed a deorbit burn for destructive reentry over the Pacific Ocean, deplo",
+    "relevance_score": -0.0106,
+    "latency_ms": 32.25,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "How does the Orion crew module handle thermal protection during re-entry?",
+    "top_chunk": "inside a fully enclosed 5-square-foot (0.46 m2) compartment for privacy that uses airflow to manage liquid and solid waste. Solid waste is stored in sealed containers, while treated liquid waste is vented overboard. The potable water dispenser supplies water for rehydrating food, preparing drinks, a",
+    "relevance_score": 0.1515,
+    "latency_ms": 29.93,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "What propulsion systems does the Space Launch System use?",
+    "top_chunk": "The Space Launch System (SLS) is an American two-stage super heavy-lift expendable launch vehicle used by NASA. The primary launch vehicle for the Artemis program, SLS is designed to launch the four-person Orion spacecraft for missions to the Moon, on a trans-lunar injection trajectory. The rocket f",
+    "relevance_score": 0.0719,
+    "latency_ms": 29.1,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "What are the key milestones between Artemis I and Artemis III?",
+    "top_chunk": "The Artemis program is a Moon exploration program led by the United States' National Aeronautics and Space Administration (NASA), aimed at returning humans to the Moon for the first time since the Apollo program and building a permanent lunar base. It was formally established via Space Policy Direct",
+    "relevance_score": 0.0603,
+    "latency_ms": 36.05,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "What happened after the Artemis I splashdown that led to Artemis II?",
+    "top_chunk": "from members of Congress over the lack of redundancy and competition, and led NASA to ask for additional support. Missions Orion test flights The Pad Abort-1 test on May 6, 2010, demonstrated Orion's launch abort system, proving it could pull a crew module away from a rocket during a pad emergency. ",
+    "relevance_score": 0.1378,
+    "latency_ms": 7.81,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "What is Jeremy Hansen's background and why was he selected for Artemis II?",
+    "top_chunk": "Jeremy Roger Hansen (born January 27, 1976) is a Royal Canadian Air Force colonel and CSA astronaut. As a mission specialist on Artemis II in April 2026, he became the first person not from the United States to travel beyond low Earth orbit and the first to travel to the vicinity of the Moon. He is ",
+    "relevance_score": 0.2424,
+    "latency_ms": 28.47,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "query": "How does Jeremy Hansen's CSA training differ from NASA astronaut training?",
+    "top_chunk": "Jeremy Roger Hansen (born January 27, 1976) is a Royal Canadian Air Force colonel and CSA astronaut. As a mission specialist on Artemis II in April 2026, he became the first person not from the United States to travel beyond low Earth orbit and the first to travel to the vicinity of the Moon. He is ",
+    "relevance_score": -0.0042,
+    "latency_ms": 6.93,
+    "embed_time_s": 0.72
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "Who are the Artemis II crew members?",
+    "top_chunk": "Jared Isaacman said that an actual launch date was to be confirmed only after a successful wet dress rehearsal was complete and the results were analyzed. Launch scheduling On March 12, after a Flight Readiness Review (FRR), seven two-hour launch windows were announced for 1\u20136 and April 30, with the",
+    "relevance_score": 0.2169,
+    "latency_ms": 7.91,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "How does the Orion spacecraft life support work?",
+    "top_chunk": "will be designed only for lunar landings and takeoffs, and not for Earth landings. Some variants will be able to return to Earth for reuse. The second-stage Starships are fully self-contained spacecraft, complete with their own propulsion systems. The combined Starship system using standard Starship",
+    "relevance_score": 0.1847,
+    "latency_ms": 5.58,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "What is the purpose of the Lunar Gateway?",
+    "top_chunk": "things are to be found\". Retired aerospace engineer Gerald Black wrote in an article on The Space Review stating that the Gateway is \"useless for supporting human return to the lunar surface and a lunar base\". He added that it was not planned to be used as a rocket fuel depot and that stopping at th",
+    "relevance_score": 0.3526,
+    "latency_ms": 4.71,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "When is the Artemis II mission launching?",
+    "top_chunk": "at 32,000 km/h (20,000 mph). Artemis I (2022) Artemis I was originally scheduled for late 2016, and as delays accrued, eventually for late 2021, but the launch date was then pushed back to August 29, 2022. Various delays related to final infrastructure repairs and weather pushed the launch date furt",
+    "relevance_score": 0.4309,
+    "latency_ms": 5.2,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "What rocket does Artemis use?",
+    "top_chunk": "and Block 2, but cancelled these plans in February 2026, aiming to standardize on Block 1, to \"reduce risk and maintain schedule stability\". Block 1B was to use the Exploration Upper Stage, and Block 2 would have used new solid rocket boosters. While SLS has the highest liftoff thrust of any rocket ",
+    "relevance_score": 0.1794,
+    "latency_ms": 5.19,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "How do the Orion spacecraft and Space Launch System work together and what are the risks if one fails?",
+    "top_chunk": "manufactured by Airbus Defence and Space. Capable of supporting a crew of six beyond low Earth orbit, Orion is equipped with solar panels, an automated docking system, and glass cockpit interfaces modeled after those used in the Boeing 787 Dreamliner. It has a single AJ10 engine for primary propulsi",
+    "relevance_score": 0.2654,
+    "latency_ms": 4.13,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "Compare the roles of Reid Wiseman and Jeremy Hansen on the Artemis II mission",
+    "top_chunk": "2022, to return to the active flight rotation. Artemis II On April 3, 2023, Wiseman was selected as the commander for the Artemis II lunar flyby mission, which flew in early April 2026. He was joined by NASA astronauts Christina Koch and Victor Glover, and Canadian Space Agency astronaut Jeremy Hans",
+    "relevance_score": 0.2762,
+    "latency_ms": 4.29,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "Is Artemis II ready to launch?",
+    "top_chunk": "to the day since NASA's Apollo 17 Moon landing, the last human crewed mission to touch down on the lunar surface. Artemis II (2026) Artemis II splashed down in the Pacific Ocean on April 11 at 00:07 UTC, concluding their nine-day trip around the Moon. Artemis III (2027) Artemis IV (early 2028) Artem",
+    "relevance_score": 0.419,
+    "latency_ms": 4.04,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "What could go wrong during the trans-lunar injection burn?",
+    "top_chunk": "before authorizing the TLI burn. Trans-lunar injection and outbound flight On flight day 2, following completion of high Earth orbit operations and system checks, Orion performed a 5-minute, 49-second TLI burn using the ESM's AJ10 main engine. This was the only use of the main engine during the miss",
+    "relevance_score": 0.1597,
+    "latency_ms": 4.02,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "How does the Orion crew module handle thermal protection during re-entry?",
+    "top_chunk": "NASA held a press briefing to outline its findings, but the publicly released version of the review team's report was heavily redacted, prompting criticism from some former NASA engineers and astronauts regarding the level of transparency. NASA engineers determined that the char loss observed during",
+    "relevance_score": 0.259,
+    "latency_ms": 4.84,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "What propulsion systems does the Space Launch System use?",
+    "top_chunk": "payload fairing, and could cost less than one-tenth as much per launch. See also Austere Human Missions to Mars Comparison of orbital launch systems Criticism of the Space Shuttle program DIRECT, proposals prior to SLS Shuttle-Derived Heavy Lift Launch Vehicle, a 2009 concept launch vehicle Ares V, ",
+    "relevance_score": 0.0586,
+    "latency_ms": 3.91,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "What are the key milestones between Artemis I and Artemis III?",
+    "top_chunk": "Artemis II sent four astronauts on a lunar flyby in 2026, becoming the first crewed flight beyond low Earth orbit since the Apollo program. Artemis III, scheduled for late 2027, is planned to test an HLS lunar lander in Earth orbit. Artemis IV, targeted for 2028, is planned to be the first crewed lu",
+    "relevance_score": 0.314,
+    "latency_ms": 4.05,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "What happened after the Artemis I splashdown that led to Artemis II?",
+    "top_chunk": "at 32,000 km/h (20,000 mph). Artemis I (2022) Artemis I was originally scheduled for late 2016, and as delays accrued, eventually for late 2021, but the launch date was then pushed back to August 29, 2022. Various delays related to final infrastructure repairs and weather pushed the launch date furt",
+    "relevance_score": 0.4256,
+    "latency_ms": 4.13,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "What is Jeremy Hansen's background and why was he selected for Artemis II?",
+    "top_chunk": "undersea exploration mission as an aquanaut aboard the Aquarius underwater laboratory. The mission began on September 7, 2014, and lasted seven days. Artemis II On April 3, 2023, Hansen was announced as the first Canadian to travel to the vicinity of the Moon, as part of the Artemis II mission. On A",
+    "relevance_score": 0.1662,
+    "latency_ms": 4.08,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "query": "How does Jeremy Hansen's CSA training differ from NASA astronaut training?",
+    "top_chunk": "Jeremy Roger Hansen (born January 27, 1976) is a Royal Canadian Air Force colonel and CSA astronaut. As a mission specialist on Artemis II in April 2026, he became the first person not from the United States to travel beyond low Earth orbit and the first to travel to the vicinity of the Moon. He is ",
+    "relevance_score": 0.0654,
+    "latency_ms": 3.98,
+    "embed_time_s": 0.26
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "Who are the Artemis II crew members?",
+    "top_chunk": "Jared Isaacman said that an actual launch date was to be confirmed only after a successful wet dress rehearsal was complete and the results were analyzed. Launch scheduling On March 12, after a Flight Readiness Review (FRR), seven two-hour launch windows were announced for 1\u20136 and April 30, with the",
+    "relevance_score": 0.1612,
+    "latency_ms": 13.02,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "How does the Orion spacecraft life support work?",
+    "top_chunk": "and pilot seats are removed and stowed to increase cabin space, and a cargo net over the mission specialist seats provides storage for equipment and suit components. The spacecraft operates with a mixed nitrogen/oxygen (N2/O2) atmosphere at either sea-level pressure (101.3 kPa or 14.69 psi) or a red",
+    "relevance_score": 0.3402,
+    "latency_ms": 10.47,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "What is the purpose of the Lunar Gateway?",
+    "top_chunk": "The Lunar Gateway was a planned space station that would have been assembled in orbit around the Moon as part of the Artemis program. Derived from earlier concepts such as the Exploration Gateway Platform, it was developed from 2017 until 2026, when the leading space agency NASA shifted focus to dev",
+    "relevance_score": 0.4186,
+    "latency_ms": 8.15,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "When is the Artemis II mission launching?",
+    "top_chunk": "Machine by the Exploration Systems Development (ESD) View Artemis I in NASA's Eyes Eyes on the Solar System \u2013 NASA/JPL Artemis Launch Calendar from Artemis Base Camp media",
+    "relevance_score": 0.4271,
+    "latency_ms": 7.16,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "What rocket does Artemis use?",
+    "top_chunk": "Machine by the Exploration Systems Development (ESD) View Artemis I in NASA's Eyes Eyes on the Solar System \u2013 NASA/JPL Artemis Launch Calendar from Artemis Base Camp media",
+    "relevance_score": 0.3271,
+    "latency_ms": 9.66,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "How do the Orion spacecraft and Space Launch System work together and what are the risks if one fails?",
+    "top_chunk": "inside a fully enclosed 5-square-foot (0.46 m2) compartment for privacy that uses airflow to manage liquid and solid waste. Solid waste is stored in sealed containers, while treated liquid waste is vented overboard. The potable water dispenser supplies water for rehydrating food, preparing drinks, a",
+    "relevance_score": 0.2389,
+    "latency_ms": 10.21,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "Compare the roles of Reid Wiseman and Jeremy Hansen on the Artemis II mission",
+    "top_chunk": "2022, to return to the active flight rotation. Artemis II On April 3, 2023, Wiseman was selected as the commander for the Artemis II lunar flyby mission, which flew in early April 2026. He was joined by NASA astronauts Christina Koch and Victor Glover, and Canadian Space Agency astronaut Jeremy Hans",
+    "relevance_score": 0.3004,
+    "latency_ms": 7.67,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "Is Artemis II ready to launch?",
+    "top_chunk": "second fire test was completed on March 18, 2021, with all four engines igniting, throttling down as expected to simulate in-flight conditions, and gimballing profiles. The core stage was shipped to Kennedy Space Center to be mated with the rest of the rocket for Artemis I. It left Stennis on April ",
+    "relevance_score": 0.3733,
+    "latency_ms": 10.18,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "What could go wrong during the trans-lunar injection burn?",
+    "top_chunk": "tests of Orion's ability to manually maneuver relative to another spacecraft using onboard navigation sensors and reaction control thrusters. Following the demonstration, Orion returned to automated control while the ICPS performed a deorbit burn for destructive reentry over the Pacific Ocean, deplo",
+    "relevance_score": -0.0106,
+    "latency_ms": 20.85,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "How does the Orion crew module handle thermal protection during re-entry?",
+    "top_chunk": "rocket. Heat shield concerns After the uncrewed Artemis I mission in November 2022, NASA engineers identified unexpected erosion of the Orion spacecraft's ablative heat shield following atmospheric reentry. Post-flight inspections found areas of char loss in the AVCOAT ablative heat shield material,",
+    "relevance_score": 0.1729,
+    "latency_ms": 8.74,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "What propulsion systems does the Space Launch System use?",
+    "top_chunk": "The Space Launch System (SLS) is an American two-stage super heavy-lift expendable launch vehicle used by NASA. The primary launch vehicle for the Artemis program, SLS is designed to launch the four-person Orion spacecraft for missions to the Moon, on a trans-lunar injection trajectory. The rocket f",
+    "relevance_score": 0.0719,
+    "latency_ms": 9.14,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "What are the key milestones between Artemis I and Artemis III?",
+    "top_chunk": "Artemis II sent four astronauts on a lunar flyby in 2026, becoming the first crewed flight beyond low Earth orbit since the Apollo program. Artemis III, scheduled for late 2027, is planned to test an HLS lunar lander in Earth orbit. Artemis IV, targeted for 2028, is planned to be the first crewed lu",
+    "relevance_score": 0.1624,
+    "latency_ms": 8.81,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "What happened after the Artemis I splashdown that led to Artemis II?",
+    "top_chunk": "at 32,000 km/h (20,000 mph). Artemis I (2022) Artemis I was originally scheduled for late 2016, and as delays accrued, eventually for late 2021, but the launch date was then pushed back to August 29, 2022. Various delays related to final infrastructure repairs and weather pushed the launch date furt",
+    "relevance_score": 0.257,
+    "latency_ms": 7.27,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "What is Jeremy Hansen's background and why was he selected for Artemis II?",
+    "top_chunk": "Jeremy Roger Hansen (born January 27, 1976) is a Royal Canadian Air Force colonel and CSA astronaut. As a mission specialist on Artemis II in April 2026, he became the first person not from the United States to travel beyond low Earth orbit and the first to travel to the vicinity of the Moon. He is ",
+    "relevance_score": 0.2387,
+    "latency_ms": 9.95,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "query": "How does Jeremy Hansen's CSA training differ from NASA astronaut training?",
+    "top_chunk": "Jeremy Roger Hansen (born January 27, 1976) is a Royal Canadian Air Force colonel and CSA astronaut. As a mission specialist on Artemis II in April 2026, he became the first person not from the United States to travel beyond low Earth orbit and the first to travel to the vicinity of the Moon. He is ",
+    "relevance_score": 0.0171,
+    "latency_ms": 6.56,
+    "embed_time_s": 1.88
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "Who are the Artemis II crew members?",
+    "top_chunk": "On March 12, after a Flight Readiness Review (FRR), seven two-hour launch windows were announced for 1\u20136 and April 30, with the first launch window being on April 1, 2026. On March 18, NASA announced that the Artemis II Space Launch System (SLS) rocket and Orion spacecraft would be rolled out the ne",
+    "relevance_score": 0.2551,
+    "latency_ms": 6.84,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "How does the Orion spacecraft life support work?",
+    "top_chunk": "In order to reduce the weight of Orion Lite, the more durable heat shield of the Orion would be replaced with a lighter weight heat shield designed to support the lower temperatures of Earth atmospheric re-entry from low Earth orbit. Additionally, the current proposal calls for a mid-air retrieval, ",
+    "relevance_score": 0.1923,
+    "latency_ms": 4.53,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "What is the purpose of the Lunar Gateway?",
+    "top_chunk": "On 10 December 2018, NASA Administrator Jim Bridenstine said at a presentation \"There are people who say we need to get there, and we need to get there tomorrow\", speaking of a crewed mission to the Moon, countering with \"What we're doing here at NASA is following Space Policy Directive 1\", speaking",
+    "relevance_score": 0.3377,
+    "latency_ms": 4.23,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "When is the Artemis II mission launching?",
+    "top_chunk": "The first SLS, for Artemis I, launched an Orion spacecraft into a lunar orbit on a test flight in fall 2022, and NASA and Boeing are constructing the next three rockets for Artemis II, Artemis III, and Artemis IV. Boeing stated in July 2021 that while the COVID-19 pandemic had affected their supplie",
+    "relevance_score": 0.2889,
+    "latency_ms": 4.78,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "What rocket does Artemis use?",
+    "top_chunk": "The Space Launch System (SLS) is an American two-stage super heavy-lift expendable launch vehicle used by NASA. The primary launch vehicle for the Artemis program, SLS is designed to launch the four-person Orion spacecraft for missions to the Moon, on a trans-lunar injection trajectory. The rocket f",
+    "relevance_score": 0.1103,
+    "latency_ms": 4.54,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "How do the Orion spacecraft and Space Launch System work together and what are the risks if one fails?",
+    "top_chunk": "The Orion Multi-Purpose Crew Vehicle (MPCV) is a partially reusable crewed spacecraft used by NASA for the Artemis lunar exploration program. It consists of a crew module (CM), a space capsule built by Lockheed Martin, and is paired with a European Service Module (ESM) provided by the European Space",
+    "relevance_score": 0.2536,
+    "latency_ms": 4.51,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "Compare the roles of Reid Wiseman and Jeremy Hansen on the Artemis II mission",
+    "top_chunk": "Gregory Reid Wiseman (born November 11, 1975) is a United States Navy captain, test pilot, and NASA astronaut. He was the commander of the 2026 Artemis II lunar flyby mission, the first crewed flight around the Moon since Apollo 17 in 1972. He served as the 17th chief of the Astronaut Office from 20",
+    "relevance_score": 0.1366,
+    "latency_ms": 4.12,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "Is Artemis II ready to launch?",
+    "top_chunk": "The Artemis program is a Moon exploration program led by the United States' National Aeronautics and Space Administration (NASA), aimed at returning humans to the Moon for the first time since the Apollo program and building a permanent lunar base. It was formally established via Space Policy Direct",
+    "relevance_score": 0.3396,
+    "latency_ms": 3.82,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "What could go wrong during the trans-lunar injection burn?",
+    "top_chunk": "The first sleep period was divided into two four-hour segments, interrupted to monitor a 43-second burn by the European Service Module that raised the spacecraft's perigee again to prepare for a trans-lunar injection (TLI) burn. Following the burn, the astronauts returned to sleep while NASA manager",
+    "relevance_score": 0.1998,
+    "latency_ms": 4.17,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "How does the Orion crew module handle thermal protection during re-entry?",
+    "top_chunk": "In order to reduce the weight of Orion Lite, the more durable heat shield of the Orion would be replaced with a lighter weight heat shield designed to support the lower temperatures of Earth atmospheric re-entry from low Earth orbit. Additionally, the current proposal calls for a mid-air retrieval, ",
+    "relevance_score": 0.2269,
+    "latency_ms": 4.16,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "What propulsion systems does the Space Launch System use?",
+    "top_chunk": "The Space Launch System (SLS) is an American two-stage super heavy-lift expendable launch vehicle used by NASA. The primary launch vehicle for the Artemis program, SLS is designed to launch the four-person Orion spacecraft for missions to the Moon, on a trans-lunar injection trajectory. The rocket f",
+    "relevance_score": -0.0088,
+    "latency_ms": 4.71,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "What are the key milestones between Artemis I and Artemis III?",
+    "top_chunk": "Artemis III (late 2027) is planned to be the second crewed Artemis mission. The crew will launch aboard SLS/Orion and conduct rendezvous and docking tests in Earth orbit with one or both commercially developed lunar landers launched separately\u2014SpaceX's Starship HLS and Blue Origin's Blue Moon\u2014as wel",
+    "relevance_score": 0.21,
+    "latency_ms": 3.96,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "What happened after the Artemis I splashdown that led to Artemis II?",
+    "top_chunk": "The first SLS, for Artemis I, launched an Orion spacecraft into a lunar orbit on a test flight in fall 2022, and NASA and Boeing are constructing the next three rockets for Artemis II, Artemis III, and Artemis IV. Boeing stated in July 2021 that while the COVID-19 pandemic had affected their supplie",
+    "relevance_score": 0.251,
+    "latency_ms": 4.39,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "What is Jeremy Hansen's background and why was he selected for Artemis II?",
+    "top_chunk": "Jeremy Roger Hansen (born January 27, 1976) is a Royal Canadian Air Force colonel and CSA astronaut. As a mission specialist on Artemis II in April 2026, he became the first person not from the United States to travel beyond low Earth orbit and the first to travel to the vicinity of the Moon. He is ",
+    "relevance_score": 0.0783,
+    "latency_ms": 4.9,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "query": "How does Jeremy Hansen's CSA training differ from NASA astronaut training?",
+    "top_chunk": "Jeremy Roger Hansen (born January 27, 1976) is a Royal Canadian Air Force colonel and CSA astronaut. As a mission specialist on Artemis II in April 2026, he became the first person not from the United States to travel beyond low Earth orbit and the first to travel to the vicinity of the Moon. He is ",
+    "relevance_score": 0.0654,
+    "latency_ms": 4.71,
+    "embed_time_s": 0.11
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "Who are the Artemis II crew members?",
+    "top_chunk": "On March 12, after a Flight Readiness Review (FRR), seven two-hour launch windows were announced for 1\u20136 and April 30, with the first launch window being on April 1, 2026. On March 18, NASA announced that the Artemis II Space Launch System (SLS) rocket and Orion spacecraft would be rolled out the ne",
+    "relevance_score": 0.2524,
+    "latency_ms": 11.1,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "How does the Orion spacecraft life support work?",
+    "top_chunk": "The OCM uses a glass cockpit with digital control systems derived in part from those used in the Boeing 787 Dreamliner. The commander and pilot are seated facing three main display screens and seven switch panels within arm's reach, which provide spacecraft status information and allow control of on",
+    "relevance_score": 0.1704,
+    "latency_ms": 15.11,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "What is the purpose of the Lunar Gateway?",
+    "top_chunk": "The Lunar Gateway was a planned space station that would have been assembled in orbit around the Moon as part of the Artemis program. Derived from earlier concepts such as the Exploration Gateway Platform, it was developed from 2017 until 2026, when the leading space agency NASA shifted focus to dev",
+    "relevance_score": 0.426,
+    "latency_ms": 8.06,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "When is the Artemis II mission launching?",
+    "top_chunk": "The first SLS, for Artemis I, launched an Orion spacecraft into a lunar orbit on a test flight in fall 2022, and NASA and Boeing are constructing the next three rockets for Artemis II, Artemis III, and Artemis IV. Boeing stated in July 2021 that while the COVID-19 pandemic had affected their supplie",
+    "relevance_score": 0.3951,
+    "latency_ms": 8.4,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "What rocket does Artemis use?",
+    "top_chunk": "The Space Launch System (SLS) is an American two-stage super heavy-lift expendable launch vehicle used by NASA. The primary launch vehicle for the Artemis program, SLS is designed to launch the four-person Orion spacecraft for missions to the Moon, on a trans-lunar injection trajectory. The rocket f",
+    "relevance_score": 0.1544,
+    "latency_ms": 16.43,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "How do the Orion spacecraft and Space Launch System work together and what are the risks if one fails?",
+    "top_chunk": "The Orion Multi-Purpose Crew Vehicle (MPCV) is a partially reusable crewed spacecraft used by NASA for the Artemis lunar exploration program. It consists of a crew module (CM), a space capsule built by Lockheed Martin, and is paired with a European Service Module (ESM) provided by the European Space",
+    "relevance_score": 0.1077,
+    "latency_ms": 9.28,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "Compare the roles of Reid Wiseman and Jeremy Hansen on the Artemis II mission",
+    "top_chunk": "On June 29, 2009, NASA announced Wiseman's selection as one of nine candidates from 3,500 applicants to begin astronaut training. At the time, he was serving as a lieutenant commander in the U.S. Navy, flying with Strike Fighter Squadron 103 aboard the aircraft carrier USS Dwight D. Eisenhower (CVN ",
+    "relevance_score": 0.3403,
+    "latency_ms": 9.39,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "Is Artemis II ready to launch?",
+    "top_chunk": "The first SLS, for Artemis I, launched an Orion spacecraft into a lunar orbit on a test flight in fall 2022, and NASA and Boeing are constructing the next three rockets for Artemis II, Artemis III, and Artemis IV. Boeing stated in July 2021 that while the COVID-19 pandemic had affected their supplie",
+    "relevance_score": 0.4001,
+    "latency_ms": 10.46,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "What could go wrong during the trans-lunar injection burn?",
+    "top_chunk": "The first sleep period was divided into two four-hour segments, interrupted to monitor a 43-second burn by the European Service Module that raised the spacecraft's perigee again to prepare for a trans-lunar injection (TLI) burn. Following the burn, the astronauts returned to sleep while NASA manager",
+    "relevance_score": -0.0038,
+    "latency_ms": 10.94,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "How does the Orion crew module handle thermal protection during re-entry?",
+    "top_chunk": "The OCM uses a glass cockpit with digital control systems derived in part from those used in the Boeing 787 Dreamliner. The commander and pilot are seated facing three main display screens and seven switch panels within arm's reach, which provide spacecraft status information and allow control of on",
+    "relevance_score": -0.0138,
+    "latency_ms": 8.67,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "What propulsion systems does the Space Launch System use?",
+    "top_chunk": "The Space Launch System (SLS) is an American two-stage super heavy-lift expendable launch vehicle used by NASA. The primary launch vehicle for the Artemis program, SLS is designed to launch the four-person Orion spacecraft for missions to the Moon, on a trans-lunar injection trajectory. The rocket f",
+    "relevance_score": 0.0719,
+    "latency_ms": 9.53,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "What are the key milestones between Artemis I and Artemis III?",
+    "top_chunk": "The first SLS, for Artemis I, launched an Orion spacecraft into a lunar orbit on a test flight in fall 2022, and NASA and Boeing are constructing the next three rockets for Artemis II, Artemis III, and Artemis IV. Boeing stated in July 2021 that while the COVID-19 pandemic had affected their supplie",
+    "relevance_score": 0.0716,
+    "latency_ms": 11.56,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "What happened after the Artemis I splashdown that led to Artemis II?",
+    "top_chunk": "Artemis II (April 1\u201311, 2026) was a crewed flyby of the Moon. It was the first crewed flight beyond low Earth orbit since Apollo 17 in 1972, the first crewed flight of the NASA-led Artemis program, the first crewed flight of the Space Launch System (SLS), and the first crewed flight of the Orion spa",
+    "relevance_score": 0.054,
+    "latency_ms": 7.58,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "What is Jeremy Hansen's background and why was he selected for Artemis II?",
+    "top_chunk": "Jeremy Roger Hansen (born January 27, 1976) is a Royal Canadian Air Force colonel and CSA astronaut. As a mission specialist on Artemis II in April 2026, he became the first person not from the United States to travel beyond low Earth orbit and the first to travel to the vicinity of the Moon. He is ",
+    "relevance_score": 0.2424,
+    "latency_ms": 10.64,
+    "embed_time_s": 0.57
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "query": "How does Jeremy Hansen's CSA training differ from NASA astronaut training?",
+    "top_chunk": "Jeremy Roger Hansen (born January 27, 1976) is a Royal Canadian Air Force colonel and CSA astronaut. As a mission specialist on Artemis II in April 2026, he became the first person not from the United States to travel beyond low Earth orbit and the first to travel to the vicinity of the Moon. He is ",
+    "relevance_score": -0.0042,
+    "latency_ms": 7.63,
+    "embed_time_s": 0.57
+  }
+]
