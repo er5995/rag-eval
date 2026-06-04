@@ -1,0 +1,56 @@
+[
+  {
+    "strategy": "fixed",
+    "model": "minilm",
+    "avg_relevance": 0.1883,
+    "avg_faithfulness": 0.287,
+    "avg_coverage": 0.9547,
+    "avg_composite": 0.3712,
+    "avg_latency_ms": 17.57
+  },
+  {
+    "strategy": "fixed",
+    "model": "mpnet",
+    "avg_relevance": 0.1833,
+    "avg_faithfulness": 0.2448,
+    "avg_coverage": 0.956,
+    "avg_composite": 0.3563,
+    "avg_latency_ms": 23.95
+  },
+  {
+    "strategy": "sliding",
+    "model": "minilm",
+    "avg_relevance": 0.2516,
+    "avg_faithfulness": 0.2724,
+    "avg_coverage": 0.98,
+    "avg_composite": 0.4035,
+    "avg_latency_ms": 4.67
+  },
+  {
+    "strategy": "sliding",
+    "model": "mpnet",
+    "avg_relevance": 0.2331,
+    "avg_faithfulness": 0.2497,
+    "avg_coverage": 0.9067,
+    "avg_composite": 0.3728,
+    "avg_latency_ms": 9.86
+  },
+  {
+    "strategy": "semantic",
+    "model": "minilm",
+    "avg_relevance": 0.1958,
+    "avg_faithfulness": 0.3416,
+    "avg_coverage": 0.9747,
+    "avg_composite": 0.3953,
+    "avg_latency_ms": 4.56
+  },
+  {
+    "strategy": "semantic",
+    "model": "mpnet",
+    "avg_relevance": 0.1776,
+    "avg_faithfulness": 0.3005,
+    "avg_coverage": 0.9813,
+    "avg_composite": 0.3752,
+    "avg_latency_ms": 10.32
+  }
+]
