@@ -108,6 +108,8 @@ Open http://localhost:3000 to view the evaluation dashboard.
 
 This is a prototype evaluation framework. 9 articles and 15 queries is a small sample by production standards. Results are directional, not definitive. Latency figures reflect retrieval only, not end-to-end answer generation. At scale, rankings may shift.
 
+The grounding metric in particular is a weak proxy. Keyword overlap does not verify whether the chunk actually answers the question.
+
 ---
 
 ## Next Steps
