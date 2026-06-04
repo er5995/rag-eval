@@ -35,9 +35,9 @@ dashboard/        →   React dashboard to visualize results and inspect failure
 
 | Metric | What It Measures |
 |---|---|
-| Relevance | Cosine similarity between query and retrieved chunk |
+| Relevance | Cosine similarity between query and retrieved chunk. |
 | Grounding | Whether the chunk contains terms likely to support the answer. This is a proxy, not proof of correctness. In practice, keyword overlap only gets you so far. This is a known limitation of the current implementation. A more rigorous approach would use an LLM judge or human-labeled ground truth to verify whether the chunk actually answers the question. That is the next step. |
-| Composite | 50% relevance + 30% grounding + 20% coverage |
+| Composite | 50% relevance + 30% grounding + 20% coverage. |
 
 Scores are intended for relative comparison across configurations, not as absolute production-readiness scores.
 
