@@ -118,6 +118,3 @@ This is a prototype evaluation framework. 9 articles and 15 queries is a small s
 - Test reranking, metadata filtering, and hybrid retrieval
 - Track failure modes over time via a CI pipeline
 
----
-
-Built by Eman Rashdi · 2026
