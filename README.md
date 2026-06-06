@@ -4,11 +4,19 @@ A lightweight framework for comparing RAG retrieval configurations before scalin
 
 ---
 
+## Purpose
+
+As a Technical Program Manager, evaluation is not optional. It is essential to have a repeatable framework to measure, visualize, and understand failures for decision making.
+
+This project builds that framework for RAG retrieval. The goal was to compare configurations across quality, latency, and grounding, surface where retrieval fails and why, and make those findings visible enough to drive real decisions before scaling a knowledge assistant.
+
+---
+
 ## What I Built
 
-When building RAG systems, teams often need to choose a chunking strategy and embedding model before they have clear evaluation signals. This project compares which combination performed best in this prototype, and where retrieval failed across configurations.
-
 I used public Artemis-related Wikipedia content as the knowledge base and evaluated 6 configurations across 15 queries spanning 8 query types: factual lookup, technical, multi-hop, comparison, ambiguous, risk analysis, date/status, and proper noun.
+
+The pipeline fetches articles, splits them using 3 chunking strategies, embeds them using 2 models, scores each configuration on relevance, grounding, and composite, and surfaces failure modes through an interactive React dashboard.
 
 ---
 
