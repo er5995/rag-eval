@@ -106,7 +106,7 @@ Open http://localhost:3000 to view the evaluation dashboard.
 
 ---
 
-## Disclaimer
+## Limitations
 
 This is a prototype evaluation framework. 9 articles and 15 queries is a small sample by production standards. Results are directional, not definitive. Latency figures reflect retrieval only, not end-to-end answer generation. The grounding metric in particular is a weak proxy. Keyword overlap does not verify whether the chunk actually answers the question. At scale, rankings may shift.
 
@@ -116,6 +116,6 @@ This is a prototype evaluation framework. 9 articles and 15 queries is a small s
 
 - Expand to 100+ documents and 1,000+ evaluation queries
 - Add human-labeled expected answers to replace keyword-based grounding
-- Separate retrieval quality from generated answer quality. One rigorous approach: use an LLM to generate a golden evaluation set, then have a human reviewer score the outputs for correctness and groundedness. Even then, LLM-generated sets can miss edge cases. Incorporating real search results and user queries closes that gap further
+- Separate retrieval quality from generated answer quality. One approach: use an LLM to generate an evaluation set, then have a human reviewer score the outputs for correctness and groundedness. However, LLM-generated sets can miss edge cases. Incorporating real search results and user queries closes that gap further
 - Test reranking, metadata filtering, and hybrid retrieval
 - Track failure modes over time via a CI pipeline
