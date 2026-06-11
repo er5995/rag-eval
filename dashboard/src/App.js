@@ -68,7 +68,7 @@ const FAILURE_MODES = [
   "Adequate retrieval"
 ];
 
-const TABS = ["Overview","Recommendation","Results","Failure Analysis","Metrics","Next Steps"];
+const TABS = ["Overview","Method & Metrics","Recommendation","Results","Failure Analysis","Next Steps"];
 
 const Card = ({ children, style }) => (
   <div style={{ background:"#111827", borderRadius:"16px", padding:"1.5rem", border:"1px solid #1f2937", ...style }}>
@@ -170,7 +170,7 @@ export default function App() {
     { n:"01", color:"#10b981", title:"Best overall configuration",
       body:`In this prototype, ${winner.label} achieved the highest composite score (${(winner.avg_composite*100).toFixed(1)}/100). The smaller MiniLM model matched or exceeded MPNet on this corpus. On small, domain-specific corpora, model size does not automatically improve retrieval.` },
     { n:"02", color:"#38bdf8", title:"Latency spreads wider than quality",
-      body:`Composite scores range from ${(sorted[sorted.length-1]?.avg_composite*100).toFixed(1)} to ${(winner.avg_composite*100).toFixed(1)} — a narrow band. Latency ranges from ${fastest.avg_latency_ms.toFixed(1)}ms to ${slowest.avg_latency_ms.toFixed(1)}ms — a ${(slowest.avg_latency_ms/fastest.avg_latency_ms).toFixed(1)}x spread. Fixed chunking is the slowest with no quality benefit.` },
+      body:`Composite scores range from ${(sorted[sorted.length-1]?.avg_composite*100).toFixed(1)} to ${(winner.avg_composite*100).toFixed(1)}, a narrow band. Latency ranges from ${fastest.avg_latency_ms.toFixed(1)}ms to ${slowest.avg_latency_ms.toFixed(1)}ms, a ${(slowest.avg_latency_ms/fastest.avg_latency_ms).toFixed(1)}x spread. Fixed chunking is the slowest with no quality benefit.` },
     { n:"03", color:"#f59e0b", title:"Query complexity exposed real differences",
       body:`Simple factual queries showed small differences between configurations. Multi-hop and comparison queries widened the gap significantly. Benchmark against your actual query distribution before selecting a production configuration.` },
     { n:"04", color:"#f87171", title:"Low grounding reveals a different problem",
@@ -194,6 +194,7 @@ export default function App() {
 
       <div style={{ maxWidth:"1040px", margin:"0 auto", padding:"3.5rem 2rem 4rem" }}>
 
+        {/* Overview */}
         <SectionBlock id="Overview" sectionRefs={sectionRefs}>
           <p style={{ fontSize:"0.75rem", fontWeight:500, color:"#6b7280", letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:"1rem" }}>RAG Evaluation Framework · 2026</p>
           <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1.25rem" }}>
@@ -204,7 +205,7 @@ export default function App() {
             A lightweight framework to compare retrieval configurations, identify tradeoffs, inspect failure modes, and choose a practical starting point before scaling a knowledge assistant.
           </p>
           <p style={{ fontSize:"0.88rem", color:"#6b7280", lineHeight:1.7, margin:"0 0 0.5rem", maxWidth:"820px" }}>
-            <span style={{ color:"#9ca3af", fontWeight:600 }}>Method.</span> Compared fixed, sliding window, and semantic chunking using MiniLM and MPNet embeddings across 15 Artemis-related queries spanning 8 query types. Evaluation uses a repeatable harness measuring relevance, grounding, and coverage per query.
+            <span style={{ color:"#9ca3af", fontWeight:600 }}>Purpose.</span> As a Technical Program Manager, evaluation is not optional. It is essential to have a repeatable framework to measure, visualize, and understand failures for decision making. This project builds that framework for RAG retrieval.
           </p>
           <p style={{ fontSize:"0.88rem", color:"#6b7280", lineHeight:1.7, margin:"0 0 1.5rem", maxWidth:"820px" }}>
             <span style={{ color:"#f9fafb", fontWeight:600 }}>Outcome.</span> In this prototype, sliding window chunking with MiniLM produced the strongest composite results. Fixed chunking is consistently the weakest, up to 5x slower with no retrieval-quality advantage. Query complexity exposed differences that simple factual queries did not.
@@ -219,7 +220,7 @@ export default function App() {
             <div>
               <div style={{ fontSize:"0.82rem", fontWeight:600, color:"#fbbf24", marginBottom:"0.2rem" }}>Directional findings — prototype evaluation harness</div>
               <div style={{ fontSize:"0.8rem", color:"#9ca3af", lineHeight:1.65 }}>
-                9 articles and 15 queries is a small sample by production standards. Results are directional, not definitive. At scale, rankings may shift. Latency figures reflect <strong style={{ color:"#f9fafb" }}>retrieval only</strong> — not end-to-end answer generation.
+                9 articles and 15 queries is a small sample by production standards. Results are directional, not definitive. At scale, rankings may shift. Latency figures reflect <strong style={{ color:"#f9fafb" }}>retrieval only</strong>, not end-to-end answer generation.
               </div>
             </div>
           </div>
@@ -227,6 +228,42 @@ export default function App() {
 
         <Divider/>
 
+        {/* Method & Metrics */}
+        <SectionBlock id="Method & Metrics" title="Method & Metrics" subtitle="How the evaluation was designed and how scores are calculated." sectionRefs={sectionRefs}>
+          <div style={{ fontSize:"0.88rem", color:"#9ca3af", lineHeight:1.8, marginBottom:"1.5rem", maxWidth:"820px" }}>
+            <span style={{ color:"#f9fafb", fontWeight:600 }}>Method.</span> Compared fixed, sliding window, and semantic chunking using MiniLM and MPNet embeddings across 15 Artemis-related queries spanning 8 query types: factual lookup, technical, multi-hop, comparison, ambiguous, risk analysis, date/status, and proper noun. Each configuration was evaluated across 90 total query runs.
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem" }}>
+            {[
+              { name:"Relevance", color:"#38bdf8",
+                formula:"Cosine similarity between the query embedding and the retrieved chunk embedding.",
+                note:null,
+                diagnoses:"Low relevance points to retrieval failure. The wrong chunk came back for this query." },
+              { name:"Grounding", color:"#10b981",
+                formula:"Measures whether the retrieved chunk contains terms likely to support the answer. Calculated using keyword overlap between query terms and retrieved chunk, excluding stop words.",
+                note:"This is a proxy, not proof of correctness. Keyword overlap only gets you so far. A more rigorous approach uses an LLM judge or human-labeled ground truth.",
+                diagnoses:"Low grounding with acceptable relevance suggests the chunk may be related but insufficient to fully support the answer." },
+              { name:"Composite", color:"#f59e0b",
+                formula:"50% relevance + 30% grounding + 20% coverage.",
+                note:"Coverage rewards chunks that contain enough context to answer the query without being too narrow.",
+                diagnoses:"One number summarizing overall retrieval quality per query. Use for relative comparison across configurations only." }
+            ].map(m=>(
+              <Card key={m.name} style={{ borderColor:`${m.color}33` }}>
+                <div style={{ fontSize:"0.72rem", color:m.color, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.07em", marginBottom:"0.5rem" }}>{m.name}</div>
+                <div style={{ fontSize:"0.8rem", color:"#9ca3af", lineHeight:1.65, marginBottom:"0.5rem" }}>{m.formula}</div>
+                {m.note && <div style={{ fontSize:"0.76rem", color:"#6b7280", fontStyle:"italic", marginBottom:"0.5rem" }}>{m.note}</div>}
+                <div style={{ fontSize:"0.78rem", color:"#6b7280", lineHeight:1.6, borderTop:"1px solid #1f2937", paddingTop:"0.6rem" }}>{m.diagnoses}</div>
+              </Card>
+            ))}
+          </div>
+          <div style={{ fontSize:"0.78rem", color:"#6b7280", marginTop:"1rem", lineHeight:1.6 }}>
+            All scores normalized to 0-100 in charts. Raw scores in the table are 0-1. All scores are relative, intended for comparison across configurations, not as absolute measures.
+          </div>
+        </SectionBlock>
+
+        <Divider/>
+
+        {/* Recommendation */}
         <SectionBlock id="Recommendation" title="Recommended Configuration" subtitle="Based on composite score, retrieval latency, and grounding across all 15 queries." sectionRefs={sectionRefs}>
           {winner && (
             <>
@@ -262,8 +299,11 @@ export default function App() {
 
         <Divider/>
 
-        <SectionBlock id="Overview-findings" title="Key Findings" sectionRefs={sectionRefs}>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"1rem" }}>
+        {/* Results */}
+        <SectionBlock id="Results" title="Results" sectionRefs={sectionRefs}>
+
+          {/* Key findings */}
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"1rem", marginBottom:"1.5rem" }}>
             {findings.map(f=>(
               <Card key={f.n} style={{ display:"flex", gap:"1.25rem", alignItems:"flex-start", borderColor:`${f.color}33` }}>
                 <div style={{ fontSize:"0.68rem", fontWeight:700, color:f.color, letterSpacing:"0.05em", minWidth:"22px", marginTop:"3px" }}>{f.n}</div>
@@ -274,11 +314,8 @@ export default function App() {
               </Card>
             ))}
           </div>
-        </SectionBlock>
 
-        <Divider/>
-
-        <SectionBlock id="Results" title="Results" sectionRefs={sectionRefs}>
+          {/* Latency hero stats */}
           {fastest && slowest && (
             <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem", marginBottom:"1.5rem" }}>
               {[
@@ -386,6 +423,7 @@ export default function App() {
 
         <Divider/>
 
+        {/* Failure Analysis */}
         <SectionBlock id="Failure Analysis" title="Failure Analysis" subtitle="Click any row to inspect the retrieved chunk. Filter by configuration, query type, or failure mode. Failure modes are assigned automatically based on score thresholds. Borderline cases may not match human judgment. This is a known limitation of proxy-based evaluation." sectionRefs={sectionRefs}>
           <Card style={{ padding:0 }}>
             <div style={{ padding:"1rem 1.5rem", borderBottom:"1px solid #1f2937", display:"flex", gap:"0.75rem", flexWrap:"wrap" }}>
@@ -456,34 +494,7 @@ export default function App() {
 
         <Divider/>
 
-        <SectionBlock id="Metrics" title="How Metrics Are Calculated" subtitle="All scores normalized to 0-100 in charts. Raw scores in the table are 0-1. All scores are relative, intended for comparison across configurations, not as absolute measures." sectionRefs={sectionRefs}>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem" }}>
-            {[
-              { name:"Relevance", color:"#38bdf8",
-                formula:"Cosine similarity between the query embedding and the retrieved chunk embedding.",
-                note:null,
-                diagnoses:"Low relevance points to retrieval failure. The wrong chunk came back for this query." },
-              { name:"Grounding", color:"#10b981",
-                formula:"Measures whether the retrieved chunk contains terms likely to support the answer. Calculated using keyword overlap between query terms and retrieved chunk, excluding stop words.",
-                note:"This is a proxy, not proof of correctness. Keyword overlap only gets you so far. A more rigorous approach uses an LLM judge or human-labeled ground truth.",
-                diagnoses:"Low grounding with acceptable relevance suggests the chunk may be related but insufficient to fully support the answer." },
-              { name:"Composite", color:"#f59e0b",
-                formula:"50% relevance + 30% grounding + 20% coverage.",
-                note:"Coverage rewards chunks that contain enough context to answer the query without being too narrow.",
-                diagnoses:"One number summarizing overall retrieval quality per query. Use for relative comparison across configurations only." }
-            ].map(m=>(
-              <Card key={m.name} style={{ borderColor:`${m.color}33` }}>
-                <div style={{ fontSize:"0.72rem", color:m.color, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.07em", marginBottom:"0.5rem" }}>{m.name}</div>
-                <div style={{ fontSize:"0.8rem", color:"#9ca3af", lineHeight:1.65, marginBottom:"0.5rem" }}>{m.formula}</div>
-                {m.note && <div style={{ fontSize:"0.76rem", color:"#6b7280", fontStyle:"italic", marginBottom:"0.5rem" }}>{m.note}</div>}
-                <div style={{ fontSize:"0.78rem", color:"#6b7280", lineHeight:1.6, borderTop:"1px solid #1f2937", paddingTop:"0.6rem" }}>{m.diagnoses}</div>
-              </Card>
-            ))}
-          </div>
-        </SectionBlock>
-
-        <Divider/>
-
+        {/* Next Steps */}
         <SectionBlock id="Next Steps" title="Next Steps" subtitle="This is a prototype evaluation harness. Here is what a production-grade version would include." sectionRefs={sectionRefs}>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem" }}>
             {[
