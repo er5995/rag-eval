@@ -39,23 +39,23 @@ const QUERY_TYPES = {
 
 const getFailureMode = (r) => {
   if (r.relevance_score < 0.15)   return "Wrong chunk retrieved";
-  if (r.faithfulness_score === 0) return "Answer not supported";
-  if (r.faithfulness_score < 0.2) return "Partial context";
-  if (QUERY_TYPES[r.query] === "Multi-hop"    && r.composite_score < 0.38) return "Multi-hop miss";
-  if (QUERY_TYPES[r.query] === "Date / status")                             return "Temporal ambiguity";
-  if (QUERY_TYPES[r.query] === "Proper noun"  && r.composite_score < 0.38) return "Related but insufficient context";
-  if (QUERY_TYPES[r.query] === "Comparison"   && r.composite_score < 0.38) return "Partial context";
+  if (r.faithfulness_score === 0) return "Answer missing from chunk";
+  if (r.faithfulness_score < 0.2) return "Insufficient context";
+  if (QUERY_TYPES[r.query] === "Multi-hop"    && r.composite_score < 0.38) return "Partially answered";
+  if (QUERY_TYPES[r.query] === "Date / status")                             return "Outdated information";
+  if (QUERY_TYPES[r.query] === "Proper noun"  && r.composite_score < 0.38) return "Related but incomplete";
+  if (QUERY_TYPES[r.query] === "Comparison"   && r.composite_score < 0.38) return "Partially answered";
   return "Adequate retrieval";
 };
 
 const FM_COLORS = {
-  "Wrong chunk retrieved":           "#f87171",
-  "Answer not supported":            "#f87171",
-  "Partial context":                 "#f59e0b",
-  "Multi-hop miss":                  "#f59e0b",
-  "Temporal ambiguity":              "#38bdf8",
-  "Related but insufficient context":"#f59e0b",
-  "Adequate retrieval":              "#6b7280"
+  "Wrong chunk retrieved":     "#f87171",
+  "Answer missing from chunk": "#f87171",
+  "Insufficient context":      "#f59e0b",
+  "Partially answered":        "#f59e0b",
+  "Outdated information":      "#38bdf8",
+  "Related but incomplete":    "#f59e0b",
+  "Adequate retrieval":        "#6b7280"
 };
 
 const TABS = ["Overview","Recommendation","Results","Failure Analysis","Metrics","Next Steps"];
@@ -155,11 +155,11 @@ export default function App() {
 
   const findings = winner && fastest ? [
     { n:"01", color:"#10b981", title:"Best overall configuration",
-      body:`In this prototype, ${winner.label} achieved the highest composite score (${(winner.avg_composite*100).toFixed(1)}/100). The smaller MiniLM model matched or exceeded MPNet — on small, domain-specific corpora, model size does not automatically improve retrieval.` },
+      body:`In this prototype, ${winner.label} achieved the highest composite score (${(winner.avg_composite*100).toFixed(1)}/100). The smaller MiniLM model matched or exceeded MPNet on this corpus. On small, domain-specific corpora, model size does not automatically improve retrieval.` },
     { n:"02", color:"#38bdf8", title:"Latency spreads wider than quality",
-      body:`Composite scores range from ${(sorted[sorted.length-1]?.avg_composite*100).toFixed(1)} to ${(winner.avg_composite*100).toFixed(1)} — a narrow band. Latency ranges from ${fastest.avg_latency_ms.toFixed(1)}ms to ${slowest.avg_latency_ms.toFixed(1)}ms — a ${(slowest.avg_latency_ms/fastest.avg_latency_ms).toFixed(1)}x spread. Fixed chunking is the slowest with no accuracy benefit.` },
+      body:`Composite scores range from ${(sorted[sorted.length-1]?.avg_composite*100).toFixed(1)} to ${(winner.avg_composite*100).toFixed(1)} — a narrow band. Latency ranges from ${fastest.avg_latency_ms.toFixed(1)}ms to ${slowest.avg_latency_ms.toFixed(1)}ms — a ${(slowest.avg_latency_ms/fastest.avg_latency_ms).toFixed(1)}x spread. Fixed chunking is the slowest with no quality benefit.` },
     { n:"03", color:"#f59e0b", title:"Query complexity exposed real differences",
-      body:`Query complexity exposed differences that simple factual queries did not. Multi-hop and comparison queries widened the performance gap significantly. Benchmark against your actual query distribution before selecting a production configuration.` },
+      body:`Simple factual queries showed small differences between configurations. Multi-hop and comparison queries widened the gap significantly. Benchmark against your actual query distribution before selecting a production configuration.` },
     { n:"04", color:"#f87171", title:"Low grounding reveals a different problem",
       body:`Low relevance points to retrieval failure. Low grounding with acceptable relevance suggests the chunk may be related but insufficient to fully support the answer. They are different failure modes requiring different fixes.` }
   ] : [];
@@ -167,7 +167,6 @@ export default function App() {
   return (
     <div style={{ fontFamily:"-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif", background:"#030712", minHeight:"100vh", color:"#f9fafb" }}>
 
-      {/* ── Sticky nav ── */}
       <div style={{ position:"sticky", top:0, zIndex:50, background:"#030712cc", backdropFilter:"blur(12px)", borderBottom:"1px solid #1f2937", padding:"0 2rem" }}>
         <div style={{ maxWidth:"1040px", margin:"0 auto", display:"flex", alignItems:"center", height:"52px" }}>
           <span style={{ fontSize:"1rem", marginRight:"1.25rem", cursor:"pointer" }} onClick={()=>scrollTo("Overview")}>🚀</span>
@@ -182,40 +181,32 @@ export default function App() {
 
       <div style={{ maxWidth:"1040px", margin:"0 auto", padding:"3.5rem 2rem 4rem" }}>
 
-        {/* ── Overview ── */}
         <SectionBlock id="Overview" sectionRefs={sectionRefs}>
-          <p style={{ fontSize:"0.75rem", fontWeight:500, color:"#6b7280", letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:"1rem" }}>
-            RAG Evaluation Framework · 2026
-          </p>
+          <p style={{ fontSize:"0.75rem", fontWeight:500, color:"#6b7280", letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:"1rem" }}>RAG Evaluation Framework · 2026</p>
           <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1.25rem" }}>
             <span style={{ fontSize:"2.2rem" }}>🚀</span>
-            <h1 style={{ fontSize:"2.6rem", fontWeight:700, color:"#f9fafb", margin:0, letterSpacing:"-0.04em", lineHeight:1.1 }}>
-              Artemis RAG Evaluation Framework
-            </h1>
+            <h1 style={{ fontSize:"2.6rem", fontWeight:700, color:"#f9fafb", margin:0, letterSpacing:"-0.04em", lineHeight:1.1 }}>Artemis RAG Evaluation Framework</h1>
           </div>
           <p style={{ fontSize:"1.05rem", color:"#9ca3af", lineHeight:1.8, margin:"0 0 0.75rem", maxWidth:"820px" }}>
             A lightweight framework to compare retrieval configurations, identify tradeoffs, inspect failure modes, and choose a practical starting point before scaling a knowledge assistant.
           </p>
           <p style={{ fontSize:"0.88rem", color:"#6b7280", lineHeight:1.7, margin:"0 0 0.5rem", maxWidth:"820px" }}>
-            <span style={{ color:"#9ca3af", fontWeight:600 }}>Method.</span> Compared fixed, sliding window, and semantic chunking using MiniLM and MPNet embeddings across 15 Artemis-related queries spanning 6 query types. Evaluation uses a repeatable harness measuring relevance, grounding, and coverage per query.
+            <span style={{ color:"#9ca3af", fontWeight:600 }}>Method.</span> Compared fixed, sliding window, and semantic chunking using MiniLM and MPNet embeddings across 15 Artemis-related queries spanning 8 query types. Evaluation uses a repeatable harness measuring relevance, grounding, and coverage per query.
           </p>
           <p style={{ fontSize:"0.88rem", color:"#6b7280", lineHeight:1.7, margin:"0 0 1.5rem", maxWidth:"820px" }}>
-            <span style={{ color:"#f9fafb", fontWeight:600 }}>Outcome.</span> In this prototype, sliding window chunking with MiniLM produced the strongest composite results. Fixed chunking is consistently the weakest — up to 5x slower with no accuracy benefit. Query complexity exposed differences that simple factual queries did not.
+            <span style={{ color:"#f9fafb", fontWeight:600 }}>Outcome.</span> In this prototype, sliding window chunking with MiniLM produced the strongest composite results. Fixed chunking is consistently the weakest — up to 5x slower with no retrieval-quality advantage. Query complexity exposed differences that simple factual queries did not.
           </p>
           <div style={{ display:"flex", gap:"0.5rem", flexWrap:"wrap", marginBottom:"2rem" }}>
-            {["9 Artemis articles","3 chunking strategies","2 embedding models","15 queries · 6 types","90 evaluations"].map(t=>(
+            {["9 Artemis articles","3 chunking strategies","2 embedding models","15 queries · 8 types","90 evaluations"].map(t=>(
               <span key={t} style={{ background:"#111827", border:"1px solid #1f2937", color:"#9ca3af", borderRadius:"20px", padding:"4px 12px", fontSize:"0.76rem" }}>{t}</span>
             ))}
           </div>
-
-          {/* Disclaimer */}
           <div style={{ background:"#111827", border:"1px solid #374151", borderLeft:"3px solid #f59e0b", borderRadius:"10px", padding:"1rem 1.25rem", display:"flex", gap:"0.75rem" }}>
             <span style={{ fontSize:"1rem", marginTop:"1px" }}>⚠️</span>
             <div>
               <div style={{ fontSize:"0.82rem", fontWeight:600, color:"#fbbf24", marginBottom:"0.2rem" }}>Directional findings — prototype evaluation harness</div>
               <div style={{ fontSize:"0.8rem", color:"#9ca3af", lineHeight:1.65 }}>
-                9 articles and 15 queries is a small sample by production standards. Results are directional, not definitive.
-                At scale, rankings may shift. Latency figures reflect <strong style={{ color:"#f9fafb" }}>retrieval only</strong> — not end-to-end answer generation.
+                9 articles and 15 queries is a small sample by production standards. Results are directional, not definitive. At scale, rankings may shift. Latency figures reflect <strong style={{ color:"#f9fafb" }}>retrieval only</strong> — not end-to-end answer generation.
               </div>
             </div>
           </div>
@@ -223,7 +214,6 @@ export default function App() {
 
         <Divider/>
 
-        {/* ── Recommendation ── */}
         <SectionBlock id="Recommendation" title="Recommended Configuration" subtitle="Based on composite score, retrieval latency, and grounding across all 15 queries." sectionRefs={sectionRefs}>
           {winner && (
             <>
@@ -233,9 +223,7 @@ export default function App() {
                     <div style={{ fontSize:"0.72rem", color:"#6b7280", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:"0.5rem" }}>Starting point before production scaling</div>
                     <div style={{ fontSize:"1.8rem", fontWeight:700, color:"#10b981", letterSpacing:"-0.02em", marginBottom:"0.75rem" }}>{winner.label}</div>
                     <div style={{ fontSize:"0.86rem", color:"#9ca3af", lineHeight:1.75, maxWidth:"540px" }}>
-                      Sliding window chunking preserves context across paragraph boundaries, improving retrieval on complex queries.
-                      MiniLM matched or exceeded MPNet on this corpus — larger models do not automatically outperform on domain-specific content at small scale.
-                      Recommended as the starting configuration before adding reranking, metadata filtering, or hybrid retrieval.
+                      Sliding window chunking preserves context across paragraph boundaries, improving retrieval on complex queries. MiniLM matched or exceeded MPNet on this corpus. Larger models do not automatically outperform on domain-specific content at small scale. Recommended as the starting configuration before adding reranking, metadata filtering, or hybrid retrieval.
                     </div>
                   </div>
                   <div style={{ display:"flex", flexDirection:"column", gap:"0.75rem", minWidth:"155px" }}>
@@ -252,7 +240,6 @@ export default function App() {
                   </div>
                 </div>
               </Card>
-              {/* Relative score note */}
               <div style={{ fontSize:"0.78rem", color:"#6b7280", lineHeight:1.6, padding:"0 0.25rem" }}>
                 <span style={{ color:"#9ca3af" }}>Note.</span> Scores are intended for relative comparison across configurations, not as absolute production-readiness scores. A composite of {(winner.avg_composite*100).toFixed(1)}/100 means this configuration outperformed others in this evaluation — not that it is production-ready at this score.
               </div>
@@ -262,7 +249,6 @@ export default function App() {
 
         <Divider/>
 
-        {/* ── Key Findings ── */}
         <SectionBlock id="Overview-findings" title="Key Findings" sectionRefs={sectionRefs}>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"1rem" }}>
             {findings.map(f=>(
@@ -279,10 +265,7 @@ export default function App() {
 
         <Divider/>
 
-        {/* ── Results ── */}
         <SectionBlock id="Results" title="Results" sectionRefs={sectionRefs}>
-
-          {/* Latency hero stats */}
           {fastest && slowest && (
             <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem", marginBottom:"1.5rem" }}>
               {[
@@ -299,15 +282,14 @@ export default function App() {
             </div>
           )}
 
-          {/* Bar charts */}
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1.5rem", marginBottom:"1.5rem" }}>
             <Card>
               <div style={{ marginBottom:"1rem" }}>
                 <div style={{ display:"flex", alignItems:"center" }}>
                   <h3 style={{ fontSize:"0.9rem", fontWeight:600, color:"#f9fafb", margin:0 }}>Composite Score</h3>
-                  <InfoTip text="Composite = 50% relevance + 30% grounding + 20% coverage. Shown as 0–100. Intended for relative comparison only, not as an absolute score." />
+                  <InfoTip text="Composite = 50% relevance + 30% grounding + 20% coverage. Shown as 0-100. Intended for relative comparison only." />
                 </div>
-                <p style={{ fontSize:"0.76rem", color:"#6b7280", margin:"0.3rem 0 0" }}>Higher is better. Scores are close across configurations — latency is the larger differentiator.</p>
+                <p style={{ fontSize:"0.76rem", color:"#6b7280", margin:"0.3rem 0 0" }}>Higher is better. Scores are close across configurations. Latency is the larger differentiator.</p>
               </div>
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={barData} layout="vertical">
@@ -325,7 +307,7 @@ export default function App() {
             <Card>
               <div style={{ marginBottom:"1rem" }}>
                 <h3 style={{ fontSize:"0.9rem", fontWeight:600, color:"#f9fafb", margin:0 }}>Retrieval Latency (ms)</h3>
-                <p style={{ fontSize:"0.76rem", color:"#6b7280", margin:"0.3rem 0 0" }}>Retrieval only — not end-to-end generation. Fixed chunking is ~5x slower with no quality benefit.</p>
+                <p style={{ fontSize:"0.76rem", color:"#6b7280", margin:"0.3rem 0 0" }}>Retrieval only — not end-to-end generation. Fixed chunking is up to 5x slower with no quality benefit.</p>
               </div>
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={barData} layout="vertical">
@@ -341,7 +323,6 @@ export default function App() {
             </Card>
           </div>
 
-          {/* Tradeoff table */}
           <Card style={{ marginBottom:"1.5rem" }}>
             <div style={{ marginBottom:"1rem" }}>
               <h3 style={{ fontSize:"0.9rem", fontWeight:600, color:"#f9fafb", margin:0 }}>Quality vs Latency — Configuration Tradeoff</h3>
@@ -373,7 +354,6 @@ export default function App() {
             </table>
           </Card>
 
-          {/* Query type breakdown */}
           <Card>
             <div style={{ marginBottom:"1rem" }}>
               <h3 style={{ fontSize:"0.9rem", fontWeight:600, color:"#f9fafb", margin:0 }}>Performance by Query Type</h3>
@@ -393,7 +373,6 @@ export default function App() {
 
         <Divider/>
 
-        {/* ── Failure Analysis ── */}
         <SectionBlock id="Failure Analysis" title="Failure Analysis" subtitle="Click any row to inspect the retrieved chunk. Filter by configuration or query type." sectionRefs={sectionRefs}>
           <Card style={{ padding:0 }}>
             <div style={{ padding:"1rem 1.5rem", borderBottom:"1px solid #1f2937", display:"flex", gap:"0.75rem", flexWrap:"wrap" }}>
@@ -459,8 +438,7 @@ export default function App() {
 
         <Divider/>
 
-        {/* ── Metrics ── */}
-        <SectionBlock id="Metrics" title="How Metrics Are Calculated" subtitle="All scores normalized to 0–100 in charts. Raw scores in the table are 0–1. All scores are relative — intended for comparison across configurations, not as absolute measures." sectionRefs={sectionRefs}>
+        <SectionBlock id="Metrics" title="How Metrics Are Calculated" subtitle="All scores normalized to 0-100 in charts. Raw scores in the table are 0-1. All scores are relative — intended for comparison across configurations, not as absolute measures." sectionRefs={sectionRefs}>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem" }}>
             {[
               { name:"Relevance", color:"#38bdf8",
@@ -468,8 +446,8 @@ export default function App() {
                 note:null,
                 diagnoses:"Low relevance points to retrieval failure — the wrong chunk came back for this query." },
               { name:"Grounding", color:"#10b981",
-                formula:"Measures whether the retrieved chunk contains terms and context likely to support the answer. Calculated using keyword overlap between query terms and retrieved chunk, excluding stop words.",
-                note:"This is a proxy, not proof of correctness.",
+                formula:"Measures whether the retrieved chunk contains terms likely to support the answer. Calculated using keyword overlap between query terms and retrieved chunk, excluding stop words.",
+                note:"This is a proxy, not proof of correctness. Keyword overlap only gets you so far. A more rigorous approach uses an LLM judge or human-labeled ground truth.",
                 diagnoses:"Low grounding with acceptable relevance suggests the chunk may be related but insufficient to fully support the answer." },
               { name:"Composite", color:"#f59e0b",
                 formula:"50% relevance + 30% grounding + 20% coverage.",
@@ -488,16 +466,15 @@ export default function App() {
 
         <Divider/>
 
-        {/* ── Next Steps ── */}
         <SectionBlock id="Next Steps" title="Next Steps" subtitle="This is a prototype evaluation harness. Here is what a production-grade version would include." sectionRefs={sectionRefs}>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem" }}>
             {[
-              { n:"01", color:"#6366f1", title:"Expand to 100+ documents",         body:"Current 9-article corpus limits generalizability. A larger corpus would stress-test chunking boundaries across more varied content and domains." },
-              { n:"02", color:"#10b981", title:"Add 1,000+ evaluation queries",     body:"Add synthetic and human-curated queries to stress-test edge cases: temporal, multi-entity, negation, and out-of-scope queries across all types." },
-              { n:"03", color:"#38bdf8", title:"Add human-labeled expected answers", body:"Replace keyword-based grounding with human-labeled ground truth or an LLM judge to more rigorously separate retrieval quality from generation quality." },
-              { n:"04", color:"#f59e0b", title:"Separate retrieval from generation", body:"Add an LLM generation step to measure end-to-end answer quality. Current metrics evaluate retrieval only — grounding is a proxy, not a full answer-quality signal." },
+              { n:"01", color:"#6366f1", title:"Expand to 100+ documents",          body:"Current 9-article corpus limits generalizability. A larger corpus would stress-test chunking boundaries across more varied content and domains." },
+              { n:"02", color:"#10b981", title:"Add 1,000+ evaluation queries",      body:"Add synthetic and human-curated queries to stress-test edge cases: temporal, multi-entity, negation, and out-of-scope queries across all types." },
+              { n:"03", color:"#38bdf8", title:"Add human-labeled expected answers",  body:"Replace keyword-based grounding with human-labeled ground truth or an LLM judge to more rigorously separate retrieval quality from generation quality." },
+              { n:"04", color:"#f59e0b", title:"Separate retrieval from generation",  body:"Add an LLM generation step to measure end-to-end answer quality. Current metrics evaluate retrieval only. Grounding is a proxy, not a full answer-quality signal." },
               { n:"05", color:"#f87171", title:"Test reranking and hybrid retrieval", body:"Add a reranker as a fourth configuration. Test metadata filtering and hybrid retrieval. These often close the gap between chunking strategies in production." },
-              { n:"06", color:"#e879f9", title:"Track failure modes over time",      body:"Wrap the harness in a CI pipeline so retrieval quality is automatically measured on every corpus or configuration change. Failure mode tracking reveals regressions early." }
+              { n:"06", color:"#e879f9", title:"Track failure modes over time",       body:"Wrap the harness in a CI pipeline so retrieval quality is automatically measured on every corpus or configuration change. Failure mode tracking reveals regressions early." }
             ].map(s=>(
               <Card key={s.n} style={{ borderColor:`${s.color}33`, padding:"1.25rem" }}>
                 <div style={{ fontSize:"0.68rem", fontWeight:700, color:s.color, letterSpacing:"0.05em", marginBottom:"0.5rem" }}>{s.n}</div>
@@ -508,10 +485,9 @@ export default function App() {
           </div>
         </SectionBlock>
 
-        {/* ── Footer ── */}
         <div style={{ textAlign:"center", color:"#374151", fontSize:"0.78rem", paddingTop:"1rem" }}>
           Built by Eman Rashdi · RAG Evaluation Framework · 2026 ·{" "}
-          <a href="https://github.com/emanrashdi/rag-eval" style={{ color:"#6366f1", textDecoration:"none" }}>GitHub</a>
+          <a href="https://github.com/er5995/rag-eval" style={{ color:"#6366f1", textDecoration:"none" }}>GitHub</a>
         </div>
 
       </div>
