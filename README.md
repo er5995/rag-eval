@@ -72,12 +72,12 @@ The main decision signal was not only the top composite score. Sliding + MiniLM 
 
 Not every retrieval failed the same way. The dashboard surfaces six distinct failure patterns found across the 90 evaluations:
 
-- **Wrong chunk retrieved** — the query returned an unrelated chunk entirely
-- **Answer not supported** — the right topic was retrieved but the answer was not in the chunk
-- **Partial context** — the chunk was related but did not contain enough information to fully answer the query
-- **Multi-hop miss** — multi-part queries where the second entity or condition was not captured
-- **Temporal ambiguity** — queries requiring current information that was not in the static corpus
-- **Related but insufficient context** — niche or proper noun queries that returned a nearby but incomplete chunk
+- **Wrong chunk retrieved** — the result was unrelated to the question
+- **Answer missing from chunk** — the right topic came back, but the specific answer was not present
+- **Insufficient context** — the chunk was relevant but too narrow to fully answer the question
+- **Partially answered** — multi-part questions where only one part of the question was addressed
+- **Outdated information** — the question required current or time-sensitive data that the static corpus did not contain
+- **Related but incomplete** — the result matched a nearby topic, entity, or keyword, but missed the specific detail being asked
 
 ---
 
