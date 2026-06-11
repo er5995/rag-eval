@@ -58,6 +58,16 @@ const FM_COLORS = {
   "Adequate retrieval":        "#6b7280"
 };
 
+const FAILURE_MODES = [
+  "Wrong chunk retrieved",
+  "Answer missing from chunk",
+  "Insufficient context",
+  "Partially answered",
+  "Outdated information",
+  "Related but incomplete",
+  "Adequate retrieval"
+];
+
 const TABS = ["Overview","Recommendation","Results","Failure Analysis","Metrics","Next Steps"];
 
 const Card = ({ children, style }) => (
@@ -104,6 +114,7 @@ export default function App() {
   const [selected, setSelected] = useState("all");
   const [expanded, setExpanded] = useState(null);
   const [qtFilter, setQtFilter] = useState("all");
+  const [fmFilter, setFmFilter] = useState("all");
   const [activeTab,setActiveTab]= useState("Overview");
   const sectionRefs = useRef({});
 
@@ -129,9 +140,11 @@ export default function App() {
   }));
 
   const queryTypes = ["all",...Array.from(new Set(Object.values(QUERY_TYPES)))];
+
   const filtered = details
     .filter(d=>selected==="all"||`${d.strategy}_${d.model}`===selected)
-    .filter(d=>qtFilter==="all"||QUERY_TYPES[d.query]===qtFilter);
+    .filter(d=>qtFilter==="all"||QUERY_TYPES[d.query]===qtFilter)
+    .filter(d=>fmFilter==="all"||getFailureMode(d)===fmFilter);
 
   const typePerf={};
   Object.values(QUERY_TYPES).forEach(t=>{typePerf[t]={scores:[],count:0};});
@@ -269,9 +282,9 @@ export default function App() {
           {fastest && slowest && (
             <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem", marginBottom:"1.5rem" }}>
               {[
-                { label:"Fastest retrieval", value:`${fastest.avg_latency_ms.toFixed(1)}ms`, sub:fastest.label,       color:"#10b981", bg:"#064e3b18" },
-                { label:"Slowest retrieval", value:`${slowest.avg_latency_ms.toFixed(1)}ms`, sub:slowest.label,       color:"#f87171", bg:"#4c051918" },
-                { label:"Latency spread",    value:`${(slowest.avg_latency_ms/fastest.avg_latency_ms).toFixed(1)}×`,  sub:"slowest vs fastest", color:"#6366f1", bg:"#1e1b4b18" }
+                { label:"Fastest retrieval", value:`${fastest.avg_latency_ms.toFixed(1)}ms`, sub:fastest.label,      color:"#10b981", bg:"#064e3b18" },
+                { label:"Slowest retrieval", value:`${slowest.avg_latency_ms.toFixed(1)}ms`, sub:slowest.label,      color:"#f87171", bg:"#4c051918" },
+                { label:"Latency spread",    value:`${(slowest.avg_latency_ms/fastest.avg_latency_ms).toFixed(1)}×`, sub:"slowest vs fastest", color:"#6366f1", bg:"#1e1b4b18" }
               ].map(s=>(
                 <Card key={s.label} style={{ borderColor:s.color, background:`linear-gradient(135deg,${s.bg},#111827)` }}>
                   <div style={{ fontSize:"0.7rem", color:"#6b7280", textTransform:"uppercase", letterSpacing:"0.07em", marginBottom:"0.5rem" }}>{s.label}</div>
@@ -373,7 +386,7 @@ export default function App() {
 
         <Divider/>
 
-        <SectionBlock id="Failure Analysis" title="Failure Analysis" subtitle="Click any row to inspect the retrieved chunk. Filter by configuration or query type." sectionRefs={sectionRefs}>
+        <SectionBlock id="Failure Analysis" title="Failure Analysis" subtitle="Click any row to inspect the retrieved chunk. Filter by configuration, query type, or failure mode." sectionRefs={sectionRefs}>
           <Card style={{ padding:0 }}>
             <div style={{ padding:"1rem 1.5rem", borderBottom:"1px solid #1f2937", display:"flex", gap:"0.75rem", flexWrap:"wrap" }}>
               <select value={selected} onChange={e=>{setSelected(e.target.value);setExpanded(null);}}
@@ -384,6 +397,11 @@ export default function App() {
               <select value={qtFilter} onChange={e=>{setQtFilter(e.target.value);setExpanded(null);}}
                 style={{ background:"#1f2937", color:"#f9fafb", border:"1px solid #374151", borderRadius:"8px", padding:"0.4rem 0.75rem", fontSize:"0.82rem", fontFamily:"inherit", cursor:"pointer" }}>
                 {queryTypes.map(t=><option key={t} value={t}>{t==="all"?"All query types":t}</option>)}
+              </select>
+              <select value={fmFilter} onChange={e=>{setFmFilter(e.target.value);setExpanded(null);}}
+                style={{ background:"#1f2937", color:"#f9fafb", border:"1px solid #374151", borderRadius:"8px", padding:"0.4rem 0.75rem", fontSize:"0.82rem", fontFamily:"inherit", cursor:"pointer" }}>
+                <option value="all">All failure modes</option>
+                {FAILURE_MODES.map(f=><option key={f} value={f}>{f}</option>)}
               </select>
             </div>
             <div style={{ overflowX:"auto" }}>
