@@ -38,7 +38,7 @@ const QUERY_TYPES = {
 };
 
 const getFailureMode = (r) => {
-  if (r.relevance_score < 0.15)   return "Wrong chunk retrieved";
+  if (r.relevance_score < 0.12)   return "Wrong chunk retrieved";
   if (r.faithfulness_score === 0) return "Answer missing from chunk";
   if (r.faithfulness_score < 0.2) return "Insufficient context";
   if (QUERY_TYPES[r.query] === "Multi-hop"    && r.composite_score < 0.38) return "Partially answered";
@@ -207,7 +207,7 @@ export default function App() {
             <span style={{ color:"#9ca3af", fontWeight:600 }}>Method.</span> Compared fixed, sliding window, and semantic chunking using MiniLM and MPNet embeddings across 15 Artemis-related queries spanning 8 query types. Evaluation uses a repeatable harness measuring relevance, grounding, and coverage per query.
           </p>
           <p style={{ fontSize:"0.88rem", color:"#6b7280", lineHeight:1.7, margin:"0 0 1.5rem", maxWidth:"820px" }}>
-            <span style={{ color:"#f9fafb", fontWeight:600 }}>Outcome.</span> In this prototype, sliding window chunking with MiniLM produced the strongest composite results. Fixed chunking is consistently the weakest — up to 5x slower with no retrieval-quality advantage. Query complexity exposed differences that simple factual queries did not.
+            <span style={{ color:"#f9fafb", fontWeight:600 }}>Outcome.</span> In this prototype, sliding window chunking with MiniLM produced the strongest composite results. Fixed chunking is consistently the weakest, up to 5x slower with no retrieval-quality advantage. Query complexity exposed differences that simple factual queries did not.
           </p>
           <div style={{ display:"flex", gap:"0.5rem", flexWrap:"wrap", marginBottom:"2rem" }}>
             {["9 Artemis articles","3 chunking strategies","2 embedding models","15 queries · 8 types","90 evaluations"].map(t=>(
@@ -254,7 +254,7 @@ export default function App() {
                 </div>
               </Card>
               <div style={{ fontSize:"0.78rem", color:"#6b7280", lineHeight:1.6, padding:"0 0.25rem" }}>
-                <span style={{ color:"#9ca3af" }}>Note.</span> Scores are intended for relative comparison across configurations, not as absolute production-readiness scores. A composite of {(winner.avg_composite*100).toFixed(1)}/100 means this configuration outperformed others in this evaluation — not that it is production-ready at this score.
+                <span style={{ color:"#9ca3af" }}>Note.</span> Scores are intended for relative comparison across configurations, not as absolute production-readiness scores. A composite of {(winner.avg_composite*100).toFixed(1)}/100 means this configuration outperformed others in this evaluation, not that it is production-ready at this score.
               </div>
             </>
           )}
@@ -284,7 +284,7 @@ export default function App() {
               {[
                 { label:"Fastest retrieval", value:`${fastest.avg_latency_ms.toFixed(1)}ms`, sub:fastest.label,      color:"#10b981", bg:"#064e3b18" },
                 { label:"Slowest retrieval", value:`${slowest.avg_latency_ms.toFixed(1)}ms`, sub:slowest.label,      color:"#f87171", bg:"#4c051918" },
-                { label:"Latency spread",    value:`${(slowest.avg_latency_ms/fastest.avg_latency_ms).toFixed(1)}×`, sub:"slowest vs fastest", color:"#6366f1", bg:"#1e1b4b18" }
+                { label:"Latency spread",    value:`${(slowest.avg_latency_ms/fastest.avg_latency_ms).toFixed(1)}x`, sub:"slowest vs fastest", color:"#6366f1", bg:"#1e1b4b18" }
               ].map(s=>(
                 <Card key={s.label} style={{ borderColor:s.color, background:`linear-gradient(135deg,${s.bg},#111827)` }}>
                   <div style={{ fontSize:"0.7rem", color:"#6b7280", textTransform:"uppercase", letterSpacing:"0.07em", marginBottom:"0.5rem" }}>{s.label}</div>
@@ -320,7 +320,7 @@ export default function App() {
             <Card>
               <div style={{ marginBottom:"1rem" }}>
                 <h3 style={{ fontSize:"0.9rem", fontWeight:600, color:"#f9fafb", margin:0 }}>Retrieval Latency (ms)</h3>
-                <p style={{ fontSize:"0.76rem", color:"#6b7280", margin:"0.3rem 0 0" }}>Retrieval only — not end-to-end generation. Fixed chunking is up to 5x slower with no quality benefit.</p>
+                <p style={{ fontSize:"0.76rem", color:"#6b7280", margin:"0.3rem 0 0" }}>Retrieval only, not end-to-end generation. Fixed chunking is up to 5x slower with no quality benefit.</p>
               </div>
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={barData} layout="vertical">
@@ -351,7 +351,7 @@ export default function App() {
               </thead>
               <tbody>
                 {tradeoffData.map((d,i)=>{
-                  const a  = i===0 ? "Best overall — high quality, low latency" : d.Latency>15 ? "Slow — no quality advantage" : d.Composite>38 ? "Good quality, moderate latency" : "Low quality, moderate latency";
+                  const a  = i===0 ? "Best overall, high quality, low latency" : d.Latency>15 ? "Slow, no quality advantage" : d.Composite>38 ? "Good quality, moderate latency" : "Low quality, moderate latency";
                   const ac = i===0 ? "#10b981" : d.Latency>15 ? "#f87171" : "#f59e0b";
                   return (
                     <tr key={d.name} style={{ borderBottom:"1px solid #111827" }}>
@@ -370,7 +370,7 @@ export default function App() {
           <Card>
             <div style={{ marginBottom:"1rem" }}>
               <h3 style={{ fontSize:"0.9rem", fontWeight:600, color:"#f9fafb", margin:0 }}>Performance by Query Type</h3>
-              <p style={{ fontSize:"0.76rem", color:"#6b7280", margin:"0.3rem 0 0" }}>Average composite score across all configurations per query type. Directional — small sample per query type.</p>
+              <p style={{ fontSize:"0.76rem", color:"#6b7280", margin:"0.3rem 0 0" }}>Average composite score across all configurations per query type. Directional, small sample per query type.</p>
             </div>
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={typeBreakdown} layout="vertical">
@@ -386,7 +386,7 @@ export default function App() {
 
         <Divider/>
 
-        <SectionBlock id="Failure Analysis" title="Failure Analysis" subtitle="Click any row to inspect the retrieved chunk. Filter by configuration, query type, or failure mode." sectionRefs={sectionRefs}>
+        <SectionBlock id="Failure Analysis" title="Failure Analysis" subtitle="Click any row to inspect the retrieved chunk. Filter by configuration, query type, or failure mode. Failure modes are assigned automatically based on score thresholds. Borderline cases may not match human judgment. This is a known limitation of proxy-based evaluation." sectionRefs={sectionRefs}>
           <Card style={{ padding:0 }}>
             <div style={{ padding:"1rem 1.5rem", borderBottom:"1px solid #1f2937", display:"flex", gap:"0.75rem", flexWrap:"wrap" }}>
               <select value={selected} onChange={e=>{setSelected(e.target.value);setExpanded(null);}}
@@ -456,13 +456,13 @@ export default function App() {
 
         <Divider/>
 
-        <SectionBlock id="Metrics" title="How Metrics Are Calculated" subtitle="All scores normalized to 0-100 in charts. Raw scores in the table are 0-1. All scores are relative — intended for comparison across configurations, not as absolute measures." sectionRefs={sectionRefs}>
+        <SectionBlock id="Metrics" title="How Metrics Are Calculated" subtitle="All scores normalized to 0-100 in charts. Raw scores in the table are 0-1. All scores are relative, intended for comparison across configurations, not as absolute measures." sectionRefs={sectionRefs}>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem" }}>
             {[
               { name:"Relevance", color:"#38bdf8",
                 formula:"Cosine similarity between the query embedding and the retrieved chunk embedding.",
                 note:null,
-                diagnoses:"Low relevance points to retrieval failure — the wrong chunk came back for this query." },
+                diagnoses:"Low relevance points to retrieval failure. The wrong chunk came back for this query." },
               { name:"Grounding", color:"#10b981",
                 formula:"Measures whether the retrieved chunk contains terms likely to support the answer. Calculated using keyword overlap between query terms and retrieved chunk, excluding stop words.",
                 note:"This is a proxy, not proof of correctness. Keyword overlap only gets you so far. A more rigorous approach uses an LLM judge or human-labeled ground truth.",
