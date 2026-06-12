@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from "recharts";
 
 const C_RELEVANCE = "#3b82f6";
 const C_GROUNDING = "#10b981";
@@ -177,7 +177,14 @@ const SectionBlock = ({ id, title, subtitle, children, sectionRefs }) => (
   </div>
 );
 
-const tooltipStyle = { background:"#1a1a1a", border:"1px solid #333", borderRadius:"8px", fontSize:"0.8rem", color:"#ffffff" };
+const tooltipStyle = {
+  background:"#0d0d0d",
+  border:"2px solid #ffffff",
+  borderRadius:"8px",
+  fontSize:"0.8rem",
+  color:"#ffffff"
+};
+
 const PAGE_SIZE = 15;
 
 export default function App() {
@@ -206,7 +213,6 @@ export default function App() {
   const fastest = [...summary].sort((a,b)=>a.avg_latency_ms-b.avg_latency_ms)[0];
   const slowest = [...summary].sort((a,b)=>b.avg_latency_ms-a.avg_latency_ms)[0];
 
-  // Bar charts use fixed display order (MiniLM first, then MPNet)
   const barData = BAR_ORDER
     .map(key=>summary.find(s=>s.key===key))
     .filter(Boolean)
@@ -217,17 +223,15 @@ export default function App() {
       color:     CONFIG_COLORS[s.key]
     }));
 
-  // Tradeoff table sorted by actual composite score descending
   const tradeoffData = [...summary]
     .sort((a,b)=>b.avg_composite-a.avg_composite)
-    .map(s=>({
+    .map((s,i)=>({
       name:      LABELS[s.key],
       Composite: +(s.avg_composite*100).toFixed(1),
       Latency:   +s.avg_latency_ms.toFixed(1),
       color:     CONFIG_COLORS[s.key],
-      rank:      0
-    }))
-    .map((d,i)=>({...d, rank:i+1}));
+      rank:      i+1
+    }));
 
   const queryTypes = ["all",...Array.from(new Set(Object.values(QUERY_TYPES)))];
 
@@ -264,10 +268,17 @@ export default function App() {
     { color:"#B23A72", label:"Fixed" }
   ];
 
-  // Latency spread — use raw values for accuracy
-const latencySpread = fastest && slowest
-  ? (Math.floor(slowest.avg_latency_ms / fastest.avg_latency_ms * 10) / 10).toFixed(1)
-  : "5.2";
+  const latencySpread = fastest && slowest
+    ? (Math.floor(slowest.avg_latency_ms / fastest.avg_latency_ms * 10) / 10).toFixed(1)
+    : "5.2";
+
+  const getAssessment = (d, i) => {
+    if (i === 0) return { label:"Best overall, high quality, low latency", color:C_GROUNDING };
+    if (d.Latency > 15) return { label:"Slow, no retrieval-quality advantage", color:"#ef4444" };
+    if (d.Composite >= 39) return { label:"Strong quality, low latency", color:C_GROUNDING };
+    if (d.Composite >= 37) return { label:"Moderate quality, moderate latency", color:C_COMPOSITE };
+    return { label:"Lower composite, higher latency", color:"#94a3b8" };
+  };
 
   const findings = winner && fastest ? [
     { title:"Best overall configuration",
@@ -279,15 +290,6 @@ const latencySpread = fastest && slowest
     { title:"Low grounding reveals a different problem",
       body:`Low relevance points to retrieval failure. Low grounding with acceptable relevance suggests the chunk may be related but insufficient to support the answer. They are different failure modes requiring different fixes.` }
   ] : [];
-
-  // Assessment labels — consistent, no overclaiming
-  const getAssessment = (d, i) => {
-    if (i === 0) return { label:"Best overall, high quality, low latency", color:C_GROUNDING };
-    if (d.Latency > 15) return { label:"Slow, no retrieval-quality advantage", color:"#ef4444" };
-    if (d.Composite >= 39) return { label:"Strong quality, low latency", color:C_GROUNDING };
-    if (d.Composite >= 37) return { label:"Moderate quality, moderate latency", color:C_COMPOSITE };
-    return { label:"Lower composite, higher latency", color:"#94a3b8" };
-  };
 
   return (
     <div style={{ fontFamily:"-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif", background:"#0d0d0d", minHeight:"100vh", color:"#e2e8f0" }}>
@@ -465,14 +467,15 @@ const latencySpread = fastest && slowest
                 subtitle="Higher is better. Scores are close — latency is the larger differentiator."
                 tip="Composite = 50% relevance + 30% grounding + 20% coverage. Shown as 0–100. For relative comparison only."
               />
-              <ResponsiveContainer width="100%" height={220}>
-                <BarChart data={barData} layout="vertical" margin={{ right:10 }}>
+              <ResponsiveContainer width="100%" height={230}>
+                <BarChart data={barData} layout="vertical" margin={{ right:55, left:0, top:0, bottom:0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a"/>
                   <XAxis type="number" domain={[0,60]} stroke="#333" tick={{ fontSize:10, fill:"#ffffff" }}/>
-                  <YAxis type="category" dataKey="name" stroke="#333" tick={{ fontSize:9, fill:"#94a3b8" }} width={135}/>
+                  <YAxis type="category" dataKey="name" stroke="#333" tick={{ fontSize:9, fill:"#94a3b8" }} width:135}/>
                   <Tooltip contentStyle={tooltipStyle}/>
                   <Bar dataKey="Composite" radius={[0,4,4,0]}>
                     {barData.map((d,i)=><Cell key={i} fill={d.color}/>)}
+                    <LabelList dataKey="Composite" position="right" style={{ fill:"#ffffff", fontSize:"11px", fontWeight:600 }}/>
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
@@ -483,14 +486,15 @@ const latencySpread = fastest && slowest
                 title="Retrieval Latency (ms)"
                 subtitle="Retrieval only, not end-to-end generation. Fixed chunking is up to 5x slower with no retrieval-quality advantage."
               />
-              <ResponsiveContainer width="100%" height={220}>
-                <BarChart data={barData} layout="vertical" margin={{ right:10 }}>
+              <ResponsiveContainer width="100%" height={230}>
+                <BarChart data={barData} layout="vertical" margin={{ right:65, left:0, top:0, bottom:0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a"/>
                   <XAxis type="number" stroke="#333" tick={{ fontSize:10, fill:"#ffffff" }}/>
                   <YAxis type="category" dataKey="name" stroke="#333" tick={{ fontSize:9, fill:"#94a3b8" }} width={135}/>
                   <Tooltip contentStyle={tooltipStyle}/>
                   <Bar dataKey="Latency" radius={[0,4,4,0]}>
                     {barData.map((d,i)=><Cell key={i} fill={d.color}/>)}
+                    <LabelList dataKey="Latency" position="right" style={{ fill:"#ffffff", fontSize:"11px", fontWeight:600 }} formatter={v=>`${v}ms`}/>
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
@@ -535,12 +539,14 @@ const latencySpread = fastest && slowest
               subtitle="Average composite score across all configurations per query type. Directional, small sample per query type."
             />
             <ResponsiveContainer width="100%" height={220}>
-              <BarChart data={typeBreakdown} layout="vertical" margin={{ right:10 }}>
+              <BarChart data={typeBreakdown} layout="vertical" margin={{ right:50, left:0, top:0, bottom:0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a"/>
                 <XAxis type="number" domain={[0,60]} stroke="#333" tick={{ fontSize:10, fill:"#ffffff" }}/>
                 <YAxis type="category" dataKey="type" stroke="#333" tick={{ fontSize:9, fill:"#ffffff" }} width={110}/>
                 <Tooltip contentStyle={tooltipStyle} formatter={v=>[`${v}/100`,"Avg composite"]}/>
-                <Bar dataKey="avg" fill={C_RELEVANCE} radius={[0,4,4,0]}/>
+                <Bar dataKey="avg" fill={C_RELEVANCE} radius={[0,4,4,0]}>
+                  <LabelList dataKey="avg" position="right" style={{ fill:"#ffffff", fontSize:"11px", fontWeight:600 }} formatter={v=>`${v}`}/>
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </Card>
