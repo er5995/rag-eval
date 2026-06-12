@@ -1,30 +1,28 @@
 import { useState, useEffect, useRef } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
-// ── Metric colors ────────────────────────────────────────────
 const C_RELEVANCE = "#3b82f6";
 const C_GROUNDING = "#10b981";
 const C_COMPOSITE = "#f59e0b";
 const C_LATENCY   = "#1d4ed8";
+const ACCENT      = "#8b5cf6";
 
-// ── Config colors — one color per strategy ───────────────────
 const CONFIG_COLORS = {
-  "fixed_minilm":    "#ef4444",
-  "fixed_mpnet":     "#ef4444",
+  "fixed_minilm":    "#B23A72",
+  "fixed_mpnet":     "#B23A72",
   "sliding_minilm":  "#8b5cf6",
   "sliding_mpnet":   "#8b5cf6",
   "semantic_minilm": "#06b6d4",
   "semantic_mpnet":  "#06b6d4"
 };
 
-// ── Failure mode colors — distinct, severity-based ───────────
 const FM_COLORS = {
   "Wrong chunk retrieved":     "#ef4444",
   "Answer missing from chunk": "#f97316",
   "Insufficient context":      "#eab308",
-  "Partially answered":        "#a855f7",
-  "Outdated information":      "#3b82f6",
-  "Related but incomplete":    "#ec4899",
+  "Partially answered":        "#d946ef",
+  "Outdated information":      "#38bdf8",
+  "Related but incomplete":    "#fb7185",
   "Adequate retrieval":        "#10b981"
 };
 
@@ -37,8 +35,6 @@ const FM_DESCRIPTIONS = {
   "Related but incomplete":    "Result matched a nearby topic or entity but missed the specific detail being asked.",
   "Adequate retrieval":        "The retrieved chunk contained enough context to support a good answer."
 };
-
-const ACCENT = "#8b5cf6";
 
 const LABELS = {
   "fixed_minilm":    "Fixed + MiniLM",
@@ -90,6 +86,15 @@ const FAILURE_MODES = [
 
 const TABS = ["Overview","Method & Metrics","Recommendation","Results","Failure Analysis","Next Steps"];
 
+const BAR_ORDER = [
+  "sliding_minilm",
+  "semantic_minilm",
+  "fixed_minilm",
+  "sliding_mpnet",
+  "semantic_mpnet",
+  "fixed_mpnet"
+];
+
 const GLOBAL_CSS = `
   * { box-sizing: border-box; }
   body { margin: 0; background: #0d0d0d; }
@@ -101,10 +106,11 @@ const GLOBAL_CSS = `
     .grid-3 { grid-template-columns: 1fr; }
     .grid-metrics { grid-template-columns: 1fr; }
     .rec-inner { grid-template-columns: 1fr !important; }
+    .rec-stats { flex-direction: row !important; flex-wrap: wrap; gap: 0.5rem !important; }
     .nav-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .nav-tabs button { font-size: 0.75rem !important; padding: 0 0.6rem !important; white-space: nowrap; }
+    .nav-tabs button { font-size: 0.72rem !important; padding: 0 0.5rem !important; white-space: nowrap; }
     .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    h1 { font-size: 2rem !important; }
+    h1 { font-size: 2rem !important; line-height: 1.2 !important; }
   }
 `;
 
@@ -112,12 +118,10 @@ const InfoTip = ({ text }) => {
   const [show, setShow] = useState(false);
   return (
     <span style={{ position:"relative", display:"inline-block", marginLeft:"5px", verticalAlign:"middle" }}>
-      <span
-        onMouseEnter={()=>setShow(true)} onMouseLeave={()=>setShow(false)}
-        onClick={()=>setShow(s=>!s)}
-        style={{ cursor:"help", color:"#475569", fontSize:"0.7rem", border:"1px solid #222", borderRadius:"50%", width:"14px", height:"14px", display:"inline-flex", alignItems:"center", justifyContent:"center" }}>?</span>
+      <span onMouseEnter={()=>setShow(true)} onMouseLeave={()=>setShow(false)} onClick={()=>setShow(s=>!s)}
+        style={{ cursor:"help", color:"#64748b", fontSize:"0.7rem", border:"1px solid #333", borderRadius:"50%", width:"14px", height:"14px", display:"inline-flex", alignItems:"center", justifyContent:"center" }}>?</span>
       {show && (
-        <div style={{ position:"absolute", bottom:"calc(100% + 6px)", left:"50%", transform:"translateX(-50%)", background:"#111", color:"#e2e8f0", borderRadius:"8px", padding:"10px 12px", fontSize:"0.75rem", lineHeight:1.6, width:"220px", zIndex:200, border:"1px solid #222", boxShadow:"0 8px 32px rgba(0,0,0,0.6)" }}>
+        <div style={{ position:"absolute", bottom:"calc(100% + 6px)", left:"50%", transform:"translateX(-50%)", background:"#1a1a1a", color:"#e2e8f0", borderRadius:"8px", padding:"10px 12px", fontSize:"0.75rem", lineHeight:1.6, width:"220px", zIndex:200, border:"1px solid #333", boxShadow:"0 8px 32px rgba(0,0,0,0.6)" }}>
           {text}
         </div>
       )}
@@ -128,13 +132,12 @@ const InfoTip = ({ text }) => {
 const FMLegendItem = ({ fm }) => {
   const [show, setShow] = useState(false);
   return (
-    <div
-      style={{ display:"flex", alignItems:"center", gap:"0.4rem", cursor:"help", position:"relative" }}
+    <div style={{ display:"flex", alignItems:"center", gap:"0.4rem", cursor:"help", position:"relative" }}
       onMouseEnter={()=>setShow(true)} onMouseLeave={()=>setShow(false)}>
       <div style={{ width:"9px", height:"9px", borderRadius:"50%", background:FM_COLORS[fm], flexShrink:0 }}/>
-      <span style={{ fontSize:"0.76rem", color:"#64748b" }}>{fm}</span>
+      <span style={{ fontSize:"0.76rem", color:"#94a3b8" }}>{fm}</span>
       {show && (
-        <div style={{ position:"absolute", bottom:"calc(100% + 6px)", left:0, background:"#111", color:"#e2e8f0", borderRadius:"8px", padding:"10px 12px", fontSize:"0.75rem", lineHeight:1.6, width:"240px", zIndex:200, border:"1px solid #222", boxShadow:"0 8px 32px rgba(0,0,0,0.6)", whiteSpace:"normal" }}>
+        <div style={{ position:"absolute", bottom:"calc(100% + 6px)", left:0, background:"#1a1a1a", color:"#e2e8f0", borderRadius:"8px", padding:"10px 12px", fontSize:"0.75rem", lineHeight:1.6, width:"250px", zIndex:200, border:"1px solid #333", boxShadow:"0 8px 32px rgba(0,0,0,0.6)", whiteSpace:"normal" }}>
           <span style={{ color:FM_COLORS[fm], fontWeight:600 }}>{fm}</span><br/>
           {FM_DESCRIPTIONS[fm]}
         </div>
@@ -149,19 +152,16 @@ const Card = ({ children, style, className }) => (
   </div>
 );
 
-const Divider = () => <div style={{ borderTop:"1px solid #111", margin:"4rem 0" }}/>;
-
-const Label = ({ text }) => (
-  <span style={{ color:"#f1f5f9", fontWeight:600 }}>{text}: </span>
-);
+const Divider = () => <div style={{ borderTop:"1px solid #1a1a1a", margin:"4rem 0" }}/>;
+const Label = ({ text }) => <span style={{ color:"#ffffff", fontWeight:700 }}>{text}: </span>;
 
 const ChartLabel = ({ title, subtitle, tip }) => (
   <div style={{ marginBottom:"1rem" }}>
     <div style={{ display:"flex", alignItems:"center" }}>
-      <span style={{ fontSize:"0.85rem", fontWeight:600, color:"#f1f5f9" }}>{title}</span>
+      <span style={{ fontSize:"0.88rem", fontWeight:700, color:"#ffffff" }}>{title}</span>
       {tip && <InfoTip text={tip}/>}
     </div>
-    {subtitle && <p style={{ fontSize:"0.74rem", color:"#475569", margin:"0.2rem 0 0", lineHeight:1.5 }}>{subtitle}</p>}
+    {subtitle && <p style={{ fontSize:"0.76rem", color:"#94a3b8", margin:"0.25rem 0 0", lineHeight:1.5 }}>{subtitle}</p>}
   </div>
 );
 
@@ -169,16 +169,16 @@ const SectionBlock = ({ id, title, subtitle, children, sectionRefs }) => (
   <div id={id} ref={el=>{ if(sectionRefs) sectionRefs.current[id]=el; }} style={{ marginBottom:"5rem", scrollMarginTop:"60px" }}>
     {title && (
       <div style={{ marginBottom:"1.75rem" }}>
-        <h2 style={{ fontSize:"1.1rem", fontWeight:700, color:"#f1f5f9", margin:"0 0 0.4rem", letterSpacing:"0.04em", textTransform:"uppercase" }}>{title}</h2>
+        <h2 style={{ fontSize:"1.1rem", fontWeight:700, color:"#ffffff", margin:"0 0 0.4rem", letterSpacing:"0.04em", textTransform:"uppercase" }}>{title}</h2>
         <div style={{ width:"2rem", height:"2px", background:ACCENT, borderRadius:"1px" }}/>
-        {subtitle && <p style={{ fontSize:"0.82rem", color:"#475569", margin:"0.75rem 0 0", lineHeight:1.6, maxWidth:"720px" }}>{subtitle}</p>}
+        {subtitle && <p style={{ fontSize:"0.84rem", color:"#94a3b8", margin:"0.75rem 0 0", lineHeight:1.65, maxWidth:"720px" }}>{subtitle}</p>}
       </div>
     )}
     {children}
   </div>
 );
 
-const tooltipStyle = { background:"#111", border:"1px solid #222", borderRadius:"8px", fontSize:"0.8rem", color:"#f1f5f9" };
+const tooltipStyle = { background:"#1a1a1a", border:"1px solid #333", borderRadius:"8px", fontSize:"0.8rem", color:"#ffffff" };
 const PAGE_SIZE = 15;
 
 export default function App() {
@@ -207,12 +207,15 @@ export default function App() {
   const fastest = [...summary].sort((a,b)=>a.avg_latency_ms-b.avg_latency_ms)[0];
   const slowest = [...summary].sort((a,b)=>b.avg_latency_ms-a.avg_latency_ms)[0];
 
-  const barData = sorted.map(s=>({
-    name:    s.label,
-    Composite: +(s.avg_composite*100).toFixed(1),
-    Latency:   +s.avg_latency_ms.toFixed(2),
-    color:   CONFIG_COLORS[s.key]
-  }));
+  const barData = BAR_ORDER
+    .map(key=>summary.find(s=>s.key===key))
+    .filter(Boolean)
+    .map(s=>({
+      name:      LABELS[s.key],
+      Composite: +(s.avg_composite*100).toFixed(1),
+      Latency:   +s.avg_latency_ms.toFixed(2),
+      color:     CONFIG_COLORS[s.key]
+    }));
 
   const queryTypes = ["all",...Array.from(new Set(Object.values(QUERY_TYPES)))];
 
@@ -232,12 +235,15 @@ export default function App() {
     .map(([type,v])=>({ type, avg:+(v.scores.reduce((a,b)=>a+b,0)/v.scores.length*100).toFixed(1) }))
     .sort((a,b)=>b.avg-a.avg);
 
-  const tradeoffData = sorted.map(s=>({
-    name:      s.label,
-    Composite: +(s.avg_composite*100).toFixed(1),
-    Latency:   +s.avg_latency_ms.toFixed(1),
-    color:     CONFIG_COLORS[s.key]
-  }));
+  const tradeoffData = BAR_ORDER
+    .map(key=>summary.find(s=>s.key===key))
+    .filter(Boolean)
+    .map(s=>({
+      name:      LABELS[s.key],
+      Composite: +(s.avg_composite*100).toFixed(1),
+      Latency:   +s.avg_latency_ms.toFixed(1),
+      color:     CONFIG_COLORS[s.key]
+    }));
 
   const scrollTo = (id) => {
     setActiveTab(id);
@@ -245,15 +251,15 @@ export default function App() {
   };
 
   const selectStyle = {
-    background:"#111", color:"#e2e8f0", border:"1px solid #222",
+    background:"#1a1a1a", color:"#e2e8f0", border:"1px solid #333",
     borderRadius:"6px", padding:"0.35rem 0.65rem", fontSize:"0.8rem",
     fontFamily:"inherit", cursor:"pointer"
   };
 
   const cfgLegend = [
-    { color:"#ef4444", label:"Fixed" },
     { color:"#8b5cf6", label:"Sliding" },
-    { color:"#06b6d4", label:"Semantic" }
+    { color:"#06b6d4", label:"Semantic" },
+    { color:"#B23A72", label:"Fixed" }
   ];
 
   const findings = winner && fastest ? [
@@ -278,7 +284,7 @@ export default function App() {
             {TABS.map(tab=>(
               <button key={tab} onClick={()=>scrollTo(tab)} style={{
                 background:"none", border:"none",
-                color: activeTab===tab ? "#f1f5f9" : "#475569",
+                color: activeTab===tab ? "#ffffff" : "#64748b",
                 fontSize:"0.8rem", fontWeight: activeTab===tab ? 600 : 400,
                 cursor:"pointer", padding:"0 0.8rem", height:"100%",
                 borderBottom: activeTab===tab ? `2px solid ${ACCENT}` : "2px solid transparent",
@@ -293,34 +299,32 @@ export default function App() {
 
         {/* Overview */}
         <SectionBlock id="Overview" sectionRefs={sectionRefs}>
-          <div style={{ marginBottom:"3rem" }}>
-            <p style={{ fontSize:"0.72rem", fontWeight:500, color:ACCENT, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:"1.25rem" }}>
-              RAG Evaluation Framework · 2026
-            </p>
-            <h1 style={{ fontSize:"3.2rem", fontWeight:700, color:"#f8fafc", margin:"0 0 1.5rem", letterSpacing:"-0.04em", lineHeight:1.1 }}>
-              🚀 Artemis RAG<br/>Evaluation Framework
-            </h1>
-            <p style={{ fontSize:"1.05rem", color:"#94a3b8", lineHeight:1.85, margin:"0 0 1.25rem", maxWidth:"620px" }}>
-              A lightweight framework to compare retrieval configurations, identify tradeoffs, inspect failure modes, and choose a practical starting point before scaling a knowledge assistant.
-            </p>
-            <p style={{ fontSize:"0.9rem", color:"#64748b", lineHeight:1.8, margin:"0 0 0.75rem", maxWidth:"620px" }}>
-              <Label text="Purpose" />As a Technical Program Manager, evaluation is not optional. It is essential to have a repeatable framework to measure, visualize, and understand failures for decision making. This project builds that framework for RAG retrieval.
-            </p>
-            <p style={{ fontSize:"0.9rem", color:"#64748b", lineHeight:1.8, margin:"0 0 2rem", maxWidth:"620px" }}>
-              <Label text="Outcome" />In this prototype, sliding window chunking with MiniLM produced the strongest composite results. Fixed chunking is consistently the weakest, up to 5x slower with no retrieval-quality advantage. Query complexity exposed differences that simple factual queries did not.
-            </p>
-            <div style={{ display:"flex", gap:"0.5rem", flexWrap:"wrap", marginBottom:"2rem" }}>
-              {["9 Artemis articles","3 chunking strategies","2 embedding models","15 queries · 8 types","90 evaluations"].map(t=>(
-                <span key={t} style={{ background:"#111", border:"1px solid #222", color:"#64748b", borderRadius:"20px", padding:"4px 14px", fontSize:"0.76rem" }}>{t}</span>
-              ))}
-            </div>
-            <div style={{ background:"#111", border:"1px solid #222", borderLeft:"3px solid #f59e0b", borderRadius:"10px", padding:"1rem 1.25rem", display:"flex", gap:"0.75rem", maxWidth:"620px" }}>
-              <span style={{ fontSize:"0.9rem", marginTop:"1px", flexShrink:0 }}>⚠️</span>
-              <div>
-                <div style={{ fontSize:"0.8rem", fontWeight:600, color:"#fbbf24", marginBottom:"0.25rem" }}>Directional findings — prototype evaluation framework</div>
-                <div style={{ fontSize:"0.79rem", color:"#64748b", lineHeight:1.7 }}>
-                  9 articles and 15 queries is a small sample by production standards. Results are directional, not definitive. At scale, rankings may shift. Latency figures reflect <strong style={{ color:"#e2e8f0" }}>retrieval only</strong>, not end-to-end answer generation.
-                </div>
+          <p style={{ fontSize:"0.72rem", fontWeight:500, color:ACCENT, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:"1.25rem" }}>
+            RAG Evaluation Framework · 2026
+          </p>
+          <h1 style={{ fontSize:"3.2rem", fontWeight:700, color:"#ffffff", margin:"0 0 1.5rem", letterSpacing:"-0.04em", lineHeight:1.1 }}>
+            🚀 Artemis RAG<br/>Evaluation Framework
+          </h1>
+          <p style={{ fontSize:"1.05rem", color:"#94a3b8", lineHeight:1.85, margin:"0 0 1.25rem", maxWidth:"620px" }}>
+            A lightweight framework to compare retrieval configurations, identify tradeoffs, inspect failure modes, and choose a practical starting point before scaling a knowledge assistant.
+          </p>
+          <p style={{ fontSize:"0.9rem", color:"#94a3b8", lineHeight:1.8, margin:"0 0 0.75rem", maxWidth:"620px" }}>
+            <Label text="Purpose" />As a Technical Program Manager, evaluation is not optional. It is essential to have a repeatable framework to measure, visualize, and understand failures for decision making. This project builds that framework for RAG retrieval.
+          </p>
+          <p style={{ fontSize:"0.9rem", color:"#94a3b8", lineHeight:1.8, margin:"0 0 2rem", maxWidth:"620px" }}>
+            <Label text="Outcome" />In this prototype, sliding window chunking with MiniLM produced the strongest composite results. Fixed chunking is consistently the weakest, up to 5x slower with no retrieval-quality advantage. Query complexity exposed differences that simple factual queries did not.
+          </p>
+          <div style={{ display:"flex", gap:"0.5rem", flexWrap:"wrap", marginBottom:"2rem" }}>
+            {["9 Artemis articles","3 chunking strategies","2 embedding models","15 queries · 8 types","90 evaluations"].map(t=>(
+              <span key={t} style={{ background:"#111", border:"1px solid #222", color:"#94a3b8", borderRadius:"20px", padding:"4px 14px", fontSize:"0.76rem" }}>{t}</span>
+            ))}
+          </div>
+          <div style={{ background:"#111", border:"1px solid #222", borderLeft:"3px solid #f59e0b", borderRadius:"10px", padding:"1rem 1.25rem", display:"flex", gap:"0.75rem", maxWidth:"620px" }}>
+            <span style={{ fontSize:"0.9rem", marginTop:"1px", flexShrink:0 }}>⚠️</span>
+            <div>
+              <div style={{ fontSize:"0.8rem", fontWeight:600, color:"#fbbf24", marginBottom:"0.25rem" }}>Directional findings — prototype evaluation framework</div>
+              <div style={{ fontSize:"0.79rem", color:"#94a3b8", lineHeight:1.7 }}>
+                9 articles and 15 queries is a small sample by production standards. Results are directional, not definitive. At scale, rankings may shift. Latency figures reflect <strong style={{ color:"#ffffff" }}>retrieval only</strong>, not end-to-end answer generation.
               </div>
             </div>
           </div>
@@ -330,7 +334,7 @@ export default function App() {
 
         {/* Method & Metrics */}
         <SectionBlock id="Method & Metrics" title="Method & Metrics" subtitle="How the evaluation was designed and how scores are calculated." sectionRefs={sectionRefs}>
-          <p style={{ fontSize:"0.9rem", color:"#64748b", lineHeight:1.8, marginBottom:"1.75rem", maxWidth:"680px" }}>
+          <p style={{ fontSize:"0.9rem", color:"#94a3b8", lineHeight:1.8, marginBottom:"1.75rem", maxWidth:"680px" }}>
             <Label text="Method" />Compared fixed, sliding window, and semantic chunking using MiniLM and MPNet embeddings across 15 Artemis-related queries spanning 8 query types: factual lookup, technical, multi-hop, comparison, ambiguous, risk analysis, date/status, and proper noun. Each configuration was evaluated across 90 total query runs.
           </p>
           <div className="grid-metrics">
@@ -351,18 +355,16 @@ export default function App() {
               <Card key={m.name} style={{ borderTop:`2px solid ${m.color}` }}>
                 <div style={{ fontSize:"0.7rem", color:m.color, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:"0.6rem" }}>{m.name}</div>
                 <div style={{ fontSize:"0.8rem", color:"#94a3b8", lineHeight:1.65, marginBottom:"0.5rem" }}>{m.formula}</div>
-                {m.note && <div style={{ fontSize:"0.76rem", color:"#475569", fontStyle:"italic", marginBottom:"0.5rem", lineHeight:1.5 }}>{m.note}</div>}
-                <div style={{ fontSize:"0.76rem", color:"#475569", lineHeight:1.6, borderTop:"1px solid #1a1a1a", paddingTop:"0.5rem" }}>{m.diagnoses}</div>
+                {m.note && <div style={{ fontSize:"0.76rem", color:"#64748b", fontStyle:"italic", marginBottom:"0.5rem", lineHeight:1.5 }}>{m.note}</div>}
+                <div style={{ fontSize:"0.76rem", color:"#64748b", lineHeight:1.6, borderTop:"1px solid #1a1a1a", paddingTop:"0.5rem" }}>{m.diagnoses}</div>
               </Card>
             ))}
           </div>
-          <p style={{ fontSize:"0.76rem", color:"#334155", marginTop:"0.85rem" }}>
+          <p style={{ fontSize:"0.76rem", color:"#64748b", marginTop:"0.85rem" }}>
             All scores normalized to 0–100 in charts. Raw scores in the table are 0–1. All scores are relative, not absolute production-readiness measures.
           </p>
-
-          {/* Config color legend */}
           <div style={{ marginTop:"2rem" }}>
-            <div style={{ fontSize:"0.72rem", color:"#475569", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:"0.75rem" }}>Configuration color key</div>
+            <div style={{ fontSize:"0.72rem", color:"#64748b", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:"0.75rem" }}>Configuration color key</div>
             <div style={{ display:"flex", gap:"1.5rem", flexWrap:"wrap" }}>
               {cfgLegend.map(l=>(
                 <div key={l.label} style={{ display:"flex", alignItems:"center", gap:"0.5rem" }}>
@@ -383,27 +385,27 @@ export default function App() {
               <div style={{ background:"#111", border:`1px solid ${CONFIG_COLORS[winner.key]}40`, borderLeft:`3px solid ${CONFIG_COLORS[winner.key]}`, borderRadius:"12px", padding:"2rem", marginBottom:"1rem" }}>
                 <div className="rec-inner" style={{ display:"grid", gridTemplateColumns:"1fr auto", gap:"1.5rem", alignItems:"flex-start" }}>
                   <div>
-                    <div style={{ fontSize:"0.7rem", color:"#475569", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:"0.5rem" }}>Starting point before production scaling</div>
-                    <div style={{ fontSize:"1.7rem", fontWeight:700, color:CONFIG_COLORS[winner.key], letterSpacing:"-0.02em", marginBottom:"0.85rem" }}>{winner.label}</div>
+                    <div style={{ fontSize:"0.7rem", color:"#64748b", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:"0.5rem" }}>Starting point before production scaling</div>
+                    <div style={{ fontSize:"1.7rem", fontWeight:700, color:"#ffffff", letterSpacing:"-0.02em", marginBottom:"0.85rem" }}>{winner.label}</div>
                     <div style={{ fontSize:"0.88rem", color:"#94a3b8", lineHeight:1.8, maxWidth:"500px" }}>
                       Sliding window chunking preserves context across paragraph boundaries, improving retrieval on complex queries. MiniLM matched or exceeded MPNet on this corpus. Larger models do not automatically outperform on domain-specific content at small scale. Recommended before adding reranking, metadata filtering, or hybrid retrieval.
                     </div>
                   </div>
-                  <div style={{ display:"flex", flexDirection:"column", gap:"0.65rem", minWidth:"145px" }}>
+                  <div className="rec-stats" style={{ display:"flex", flexDirection:"column", gap:"0.65rem", minWidth:"145px" }}>
                     {[
-                      { label:"Composite",        value:`${(winner.avg_composite*100).toFixed(1)}/100`, color:C_COMPOSITE },
-                      { label:"Grounding",         value:`${(winner.avg_faithfulness*100).toFixed(0)}%`, color:C_GROUNDING },
-                      { label:"Retrieval latency", value:`${winner.avg_latency_ms.toFixed(1)}ms`,        color:C_LATENCY }
+                      { label:"Composite",        value:`${(winner.avg_composite*100).toFixed(1)}/100` },
+                      { label:"Grounding",         value:`${(winner.avg_faithfulness*100).toFixed(0)}%` },
+                      { label:"Retrieval latency", value:`${winner.avg_latency_ms.toFixed(1)}ms` }
                     ].map(m=>(
                       <div key={m.label} style={{ background:"#0d0d0d", borderRadius:"8px", padding:"0.65rem 1rem", border:"1px solid #1a1a1a" }}>
-                        <div style={{ fontSize:"0.65rem", color:"#334155", textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:"0.2rem" }}>{m.label}</div>
-                        <div style={{ fontSize:"1.25rem", fontWeight:700, color:m.color, letterSpacing:"-0.02em" }}>{m.value}</div>
+                        <div style={{ fontSize:"0.65rem", color:"#64748b", textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:"0.2rem" }}>{m.label}</div>
+                        <div style={{ fontSize:"1.25rem", fontWeight:700, color:"#ffffff", letterSpacing:"-0.02em" }}>{m.value}</div>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
-              <p style={{ fontSize:"0.78rem", color:"#475569", lineHeight:1.6 }}>
+              <p style={{ fontSize:"0.78rem", color:"#64748b", lineHeight:1.6 }}>
                 <span style={{ color:"#94a3b8", fontWeight:600 }}>Note: </span>Scores are for relative comparison across configurations, not absolute production-readiness scores. A composite of {(winner.avg_composite*100).toFixed(1)}/100 means this configuration outperformed others in this evaluation, not that it is production-ready at this score.
               </p>
             </>
@@ -418,8 +420,8 @@ export default function App() {
             {findings.map((f,i)=>(
               <Card key={i}>
                 <div style={{ fontSize:"0.7rem", fontWeight:700, color:ACCENT, letterSpacing:"0.06em", marginBottom:"0.4rem" }}>0{i+1}</div>
-                <div style={{ fontWeight:600, fontSize:"0.88rem", color:"#f1f5f9", marginBottom:"0.4rem" }}>{f.title}</div>
-                <div style={{ fontSize:"0.8rem", color:"#64748b", lineHeight:1.7 }}>{f.body}</div>
+                <div style={{ fontWeight:600, fontSize:"0.88rem", color:"#ffffff", marginBottom:"0.4rem" }}>{f.title}</div>
+                <div style={{ fontSize:"0.8rem", color:"#94a3b8", lineHeight:1.7 }}>{f.body}</div>
               </Card>
             ))}
           </div>
@@ -432,9 +434,9 @@ export default function App() {
                 { label:"Latency spread",    value:`${(slowest.avg_latency_ms/fastest.avg_latency_ms).toFixed(1)}x`, sub:"slowest vs fastest", color:C_COMPOSITE }
               ].map(s=>(
                 <div key={s.label} style={{ background:"#111", border:"1px solid #222", borderTop:`2px solid ${s.color}`, borderRadius:"12px", padding:"1.25rem" }}>
-                  <div style={{ fontSize:"0.68rem", color:"#334155", textTransform:"uppercase", letterSpacing:"0.07em", marginBottom:"0.5rem" }}>{s.label}</div>
+                  <div style={{ fontSize:"0.68rem", color:"#64748b", textTransform:"uppercase", letterSpacing:"0.07em", marginBottom:"0.5rem" }}>{s.label}</div>
                   <div style={{ fontSize:"2.1rem", fontWeight:700, color:s.color, letterSpacing:"-0.03em", lineHeight:1 }}>{s.value}</div>
-                  <div style={{ fontSize:"0.78rem", color:"#475569", marginTop:"0.5rem" }}>{s.sub}</div>
+                  <div style={{ fontSize:"0.78rem", color:"#94a3b8", marginTop:"0.5rem" }}>{s.sub}</div>
                 </div>
               ))}
             </div>
@@ -447,11 +449,11 @@ export default function App() {
                 subtitle="Higher is better. Scores are close — latency is the larger differentiator."
                 tip="Composite = 50% relevance + 30% grounding + 20% coverage. Shown as 0–100. For relative comparison only."
               />
-              <ResponsiveContainer width="100%" height={210}>
-                <BarChart data={barData} layout="vertical">
+              <ResponsiveContainer width="100%" height={220}>
+                <BarChart data={barData} layout="vertical" margin={{ right:10 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a"/>
-                  <XAxis type="number" domain={[0,60]} stroke="#222" tick={{ fontSize:10, fill:"#475569" }}/>
-                  <YAxis type="category" dataKey="name" stroke="#222" tick={{ fontSize:9, fill:"#64748b" }} width={135}/>
+                  <XAxis type="number" domain={[0,60]} stroke="#333" tick={{ fontSize:10, fill:"#ffffff" }}/>
+                  <YAxis type="category" dataKey="name" stroke="#333" tick={{ fontSize:9, fill:"#94a3b8" }} width={135}/>
                   <Tooltip contentStyle={tooltipStyle}/>
                   <Bar dataKey="Composite" radius={[0,4,4,0]}>
                     {barData.map((d,i)=><Cell key={i} fill={d.color}/>)}
@@ -465,13 +467,15 @@ export default function App() {
                 title="Retrieval Latency (ms)"
                 subtitle="Retrieval only, not end-to-end generation. Fixed chunking is up to 5x slower with no quality benefit."
               />
-              <ResponsiveContainer width="100%" height={210}>
-                <BarChart data={barData} layout="vertical">
+              <ResponsiveContainer width="100%" height={220}>
+                <BarChart data={barData} layout="vertical" margin={{ right:10 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a"/>
-                  <XAxis type="number" stroke="#222" tick={{ fontSize:10, fill:"#475569" }}/>
-                  <YAxis type="category" dataKey="name" stroke="#222" tick={{ fontSize:9, fill:"#64748b" }} width={135}/>
+                  <XAxis type="number" stroke="#333" tick={{ fontSize:10, fill:"#ffffff" }}/>
+                  <YAxis type="category" dataKey="name" stroke="#333" tick={{ fontSize:9, fill:"#94a3b8" }} width={135}/>
                   <Tooltip contentStyle={tooltipStyle}/>
-                  <Bar dataKey="Latency" fill={C_LATENCY} radius={[0,4,4,0]}/>
+                  <Bar dataKey="Latency" radius={[0,4,4,0]}>
+                    {barData.map((d,i)=><Cell key={i} fill={d.color}/>)}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </Card>
@@ -487,7 +491,7 @@ export default function App() {
                 <thead>
                   <tr style={{ borderBottom:"1px solid #1a1a1a" }}>
                     {["Rank","Configuration","Composite","Latency","Assessment"].map(h=>(
-                      <th key={h} style={{ padding:"0.55rem 0.75rem", textAlign:"left", color:"#334155", fontWeight:500, fontSize:"0.7rem", textTransform:"uppercase", letterSpacing:"0.06em" }}>{h}</th>
+                      <th key={h} style={{ padding:"0.55rem 0.75rem", textAlign:"left", color:"#64748b", fontWeight:500, fontSize:"0.7rem", textTransform:"uppercase", letterSpacing:"0.06em" }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -497,10 +501,10 @@ export default function App() {
                     const ac = i===0 ? C_GROUNDING : d.Latency>15 ? "#ef4444" : C_COMPOSITE;
                     return (
                       <tr key={d.name} style={{ borderBottom:"1px solid #111" }}>
-                        <td style={{ padding:"0.7rem 0.75rem", color:"#475569", fontWeight:700 }}>#{i+1}</td>
+                        <td style={{ padding:"0.7rem 0.75rem", color:"#64748b", fontWeight:700 }}>#{i+1}</td>
                         <td style={{ padding:"0.7rem 0.75rem" }}><span style={{ color:d.color, fontWeight:600 }}>{d.name}</span></td>
-                        <td style={{ padding:"0.7rem 0.75rem", color:"#64748b", fontVariantNumeric:"tabular-nums" }}>{d.Composite}/100</td>
-                        <td style={{ padding:"0.7rem 0.75rem", color:"#64748b", fontVariantNumeric:"tabular-nums" }}>{d.Latency}ms</td>
+                        <td style={{ padding:"0.7rem 0.75rem", color:"#ffffff", fontVariantNumeric:"tabular-nums" }}>{d.Composite}/100</td>
+                        <td style={{ padding:"0.7rem 0.75rem", color:"#ffffff", fontVariantNumeric:"tabular-nums" }}>{d.Latency}ms</td>
                         <td style={{ padding:"0.7rem 0.75rem" }}><span style={{ color:ac, fontSize:"0.79rem" }}>{a}</span></td>
                       </tr>
                     );
@@ -515,13 +519,13 @@ export default function App() {
               title="Performance by Query Type"
               subtitle="Average composite score across all configurations per query type. Directional, small sample per query type."
             />
-            <ResponsiveContainer width="100%" height={210}>
-              <BarChart data={typeBreakdown} layout="vertical">
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={typeBreakdown} layout="vertical" margin={{ right:10 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a"/>
-                <XAxis type="number" domain={[0,60]} stroke="#222" tick={{ fontSize:10, fill:"#475569" }}/>
-                <YAxis type="category" dataKey="type" stroke="#222" tick={{ fontSize:9, fill:"#64748b" }} width={105}/>
+                <XAxis type="number" domain={[0,60]} stroke="#333" tick={{ fontSize:10, fill:"#ffffff" }}/>
+                <YAxis type="category" dataKey="type" stroke="#333" tick={{ fontSize:9, fill:"#ffffff" }} width={110}/>
                 <Tooltip contentStyle={tooltipStyle} formatter={v=>[`${v}/100`,"Avg composite"]}/>
-                <Bar dataKey="avg" fill={C_COMPOSITE} radius={[0,4,4,0]}/>
+                <Bar dataKey="avg" fill={C_RELEVANCE} radius={[0,4,4,0]}/>
               </BarChart>
             </ResponsiveContainer>
           </Card>
@@ -532,9 +536,8 @@ export default function App() {
         {/* Failure Analysis */}
         <SectionBlock id="Failure Analysis" title="Failure Analysis" subtitle="Click any row to inspect the retrieved chunk. Failure modes are assigned automatically based on score thresholds. Borderline cases may not match human judgment. This is a known limitation of proxy-based evaluation." sectionRefs={sectionRefs}>
 
-          {/* Failure mode legend with hover tooltips */}
           <div style={{ marginBottom:"1.25rem" }}>
-            <div style={{ fontSize:"0.72rem", color:"#475569", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:"0.6rem" }}>Failure mode legend — hover for details</div>
+            <div style={{ fontSize:"0.72rem", color:"#64748b", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:"0.6rem" }}>Failure mode legend — hover for details</div>
             <div style={{ display:"flex", gap:"1rem", flexWrap:"wrap" }}>
               {FAILURE_MODES.map(fm=><FMLegendItem key={fm} fm={fm}/>)}
             </div>
@@ -552,14 +555,14 @@ export default function App() {
                 </select>
               ))}
               <button onClick={()=>{setSelected("all");setQtFilter("all");setFmFilter("all");setPage(0);setExpanded(null);}}
-                style={{ ...selectStyle, color:"#475569", marginLeft:"auto" }}>Reset</button>
+                style={{ ...selectStyle, color:"#64748b", marginLeft:"auto" }}>Reset</button>
             </div>
             <div className="table-wrap">
               <table style={{ width:"100%", borderCollapse:"collapse", fontSize:"0.8rem" }}>
                 <thead>
                   <tr style={{ borderBottom:"1px solid #1a1a1a" }}>
                     {["Configuration","Type","Query","Relevance","Grounding","Composite","Failure Mode"].map(h=>(
-                      <th key={h} style={{ padding:"0.65rem 0.85rem", textAlign:"left", color:"#334155", fontWeight:500, fontSize:"0.68rem", textTransform:"uppercase", letterSpacing:"0.06em", whiteSpace:"nowrap" }}>{h}</th>
+                      <th key={h} style={{ padding:"0.65rem 0.85rem", textAlign:"left", color:"#64748b", fontWeight:500, fontSize:"0.68rem", textTransform:"uppercase", letterSpacing:"0.06em", whiteSpace:"nowrap" }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -577,28 +580,22 @@ export default function App() {
                           <td style={{ padding:"0.75rem 0.85rem" }}>
                             <span style={{ fontSize:"0.78rem", fontWeight:600, color:cfgColor }}>{LABELS[key]}</span>
                           </td>
-                          <td style={{ padding:"0.75rem 0.85rem", color:"#f1f5f9", fontSize:"0.77rem" }}>
+                          <td style={{ padding:"0.75rem 0.85rem", color:"#ffffff", fontSize:"0.77rem" }}>
                             {QUERY_TYPES[r.query]||"Other"}
                           </td>
                           <td style={{ padding:"0.75rem 0.85rem", color:"#94a3b8", maxWidth:"200px", lineHeight:1.5 }}>{r.query}</td>
-                          <td style={{ padding:"0.75rem 0.85rem", fontVariantNumeric:"tabular-nums" }}>
-                            <span style={{ color:C_RELEVANCE }}>{r.relevance_score}</span>
-                          </td>
-                          <td style={{ padding:"0.75rem 0.85rem", fontVariantNumeric:"tabular-nums" }}>
-                            <span style={{ color:C_GROUNDING }}>{r.faithfulness_score}</span>
-                          </td>
+                          <td style={{ padding:"0.75rem 0.85rem", color:"#ffffff", fontVariantNumeric:"tabular-nums" }}>{r.relevance_score}</td>
+                          <td style={{ padding:"0.75rem 0.85rem", color:"#ffffff", fontVariantNumeric:"tabular-nums" }}>{r.faithfulness_score}</td>
+                          <td style={{ padding:"0.75rem 0.85rem", color:"#ffffff", fontVariantNumeric:"tabular-nums", fontWeight:600 }}>{r.composite_score}</td>
                           <td style={{ padding:"0.75rem 0.85rem" }}>
-                            <span style={{ background:`${cfgColor}15`, color:cfgColor, borderRadius:"4px", padding:"2px 7px", fontSize:"0.76rem", fontWeight:600 }}>{r.composite_score}</span>
-                          </td>
-                          <td style={{ padding:"0.75rem 0.85rem" }}>
-                            <span style={{ color:FM_COLORS[fm]||"#475569", fontSize:"0.76rem" }}>{fm}</span>
-                            <span style={{ marginLeft:"6px", fontSize:"0.7rem", color:"#f1f5f9", fontWeight:600 }}>{isOpen?"▲":"▼"}</span>
+                            <span style={{ color:FM_COLORS[fm]||"#64748b", fontSize:"0.76rem" }}>{fm}</span>
+                            <span style={{ marginLeft:"6px", fontSize:"0.7rem", color:"#ffffff", fontWeight:700 }}>{isOpen?"▲":"▼"}</span>
                           </td>
                         </tr>
                         {isOpen && (
                           <tr key={`${globalI}-exp`} style={{ borderBottom:"1px solid #1a1a1a" }}>
                             <td colSpan={7} style={{ padding:"0.75rem 1.1rem 1.1rem", background:"#111" }}>
-                              <div style={{ fontSize:"0.67rem", color:"#334155", textTransform:"uppercase", letterSpacing:"0.07em", marginBottom:"0.4rem" }}>Retrieved chunk</div>
+                              <div style={{ fontSize:"0.67rem", color:"#64748b", textTransform:"uppercase", letterSpacing:"0.07em", marginBottom:"0.4rem" }}>Retrieved chunk</div>
                               <div style={{ fontSize:"0.8rem", color:"#94a3b8", lineHeight:1.8, background:"#0d0d0d", borderRadius:"8px", padding:"0.9rem 1rem", border:"1px solid #1a1a1a" }}>
                                 {r.top_chunk}
                               </div>
@@ -614,7 +611,7 @@ export default function App() {
 
             {totalPages > 1 && (
               <div style={{ padding:"0.85rem 1.25rem", borderTop:"1px solid #1a1a1a", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-                <span style={{ fontSize:"0.78rem", color:"#475569" }}>
+                <span style={{ fontSize:"0.78rem", color:"#64748b" }}>
                   Showing {page * PAGE_SIZE + 1}–{Math.min((page+1)*PAGE_SIZE, filtered.length)} of {filtered.length} results
                 </span>
                 <div style={{ display:"flex", gap:"0.5rem" }}>
@@ -643,14 +640,14 @@ export default function App() {
             ].map(s=>(
               <Card key={s.n}>
                 <div style={{ fontSize:"0.68rem", fontWeight:700, color:ACCENT, letterSpacing:"0.05em", marginBottom:"0.4rem" }}>{s.n}</div>
-                <div style={{ fontWeight:600, fontSize:"0.85rem", color:"#e2e8f0", marginBottom:"0.35rem" }}>{s.title}</div>
-                <div style={{ fontSize:"0.79rem", color:"#64748b", lineHeight:1.7 }}>{s.body}</div>
+                <div style={{ fontWeight:600, fontSize:"0.85rem", color:"#ffffff", marginBottom:"0.35rem" }}>{s.title}</div>
+                <div style={{ fontSize:"0.79rem", color:"#94a3b8", lineHeight:1.7 }}>{s.body}</div>
               </Card>
             ))}
           </div>
         </SectionBlock>
 
-        <div style={{ textAlign:"center", color:"#222", fontSize:"0.76rem", paddingTop:"1rem" }}>
+        <div style={{ textAlign:"center", color:"#333", fontSize:"0.76rem", paddingTop:"1rem" }}>
           Built by Eman Rashdi · RAG Evaluation Framework · 2026 ·{" "}
           <a href="https://github.com/er5995/rag-eval" style={{ color:ACCENT, textDecoration:"none" }}>GitHub</a>
         </div>
