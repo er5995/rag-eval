@@ -303,7 +303,7 @@ export default function App() {
             RAG Evaluation Framework · 2026
           </p>
           <h1 style={{ fontSize:"3.2rem", fontWeight:700, color:"#ffffff", margin:"0 0 1.5rem", letterSpacing:"-0.04em", lineHeight:1.1 }}>
-            🚀 Artemis RAG<br/>Evaluation Framework
+            🚀 Artemis RAG Evaluation Framework
           </h1>
           <p style={{ fontSize:"1.05rem", color:"#94a3b8", lineHeight:1.85, margin:"0 0 1.25rem" }}>
             A lightweight framework to compare retrieval configurations, identify tradeoffs, inspect failure modes, and choose a practical starting point before scaling a knowledge assistant.
