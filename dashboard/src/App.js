@@ -96,6 +96,10 @@ const QueryTypeBadge = ({ type }) => {
   return <span style={{ background:`${c}22`, color:c, borderRadius:"5px", padding:"2px 7px", fontSize:"0.71rem", fontWeight:600, whiteSpace:"nowrap" }}>{type}</span>;
 };
 
+const Label = ({ text }) => (
+  <span style={{ color:"#f9fafb", fontWeight:600 }}>{text}: </span>
+);
+
 const SectionBlock = ({ id, title, subtitle, children, sectionRefs }) => (
   <div id={id} ref={el=>{ if(sectionRefs) sectionRefs.current[id]=el; }} style={{ marginBottom:"3.5rem", scrollMarginTop:"80px" }}>
     {title && <h2 style={{ fontSize:"1.25rem", fontWeight:700, color:"#f9fafb", margin:"0 0 0.3rem", letterSpacing:"-0.02em" }}>{title}</h2>}
@@ -205,10 +209,10 @@ export default function App() {
             A lightweight framework to compare retrieval configurations, identify tradeoffs, inspect failure modes, and choose a practical starting point before scaling a knowledge assistant.
           </p>
           <p style={{ fontSize:"0.88rem", color:"#6b7280", lineHeight:1.7, margin:"0 0 0.5rem", maxWidth:"820px" }}>
-            <span style={{ color:"#9ca3af", fontWeight:600 }}>Purpose.</span> As a Technical Program Manager, evaluation is not optional. It is essential to have a repeatable framework to measure, visualize, and understand failures for decision making. This project builds that framework for RAG retrieval.
+            <Label text="Purpose" />As a Technical Program Manager, evaluation is not optional. It is essential to have a repeatable framework to measure, visualize, and understand failures for decision making. This project builds that framework for RAG retrieval.
           </p>
           <p style={{ fontSize:"0.88rem", color:"#6b7280", lineHeight:1.7, margin:"0 0 1.5rem", maxWidth:"820px" }}>
-            <span style={{ color:"#f9fafb", fontWeight:600 }}>Outcome.</span> In this prototype, sliding window chunking with MiniLM produced the strongest composite results. Fixed chunking is consistently the weakest, up to 5x slower with no retrieval-quality advantage. Query complexity exposed differences that simple factual queries did not.
+            <Label text="Outcome" />In this prototype, sliding window chunking with MiniLM produced the strongest composite results. Fixed chunking is consistently the weakest, up to 5x slower with no retrieval-quality advantage. Query complexity exposed differences that simple factual queries did not.
           </p>
           <div style={{ display:"flex", gap:"0.5rem", flexWrap:"wrap", marginBottom:"2rem" }}>
             {["9 Artemis articles","3 chunking strategies","2 embedding models","15 queries · 8 types","90 evaluations"].map(t=>(
@@ -218,7 +222,7 @@ export default function App() {
           <div style={{ background:"#111827", border:"1px solid #374151", borderLeft:"3px solid #f59e0b", borderRadius:"10px", padding:"1rem 1.25rem", display:"flex", gap:"0.75rem" }}>
             <span style={{ fontSize:"1rem", marginTop:"1px" }}>⚠️</span>
             <div>
-              <div style={{ fontSize:"0.82rem", fontWeight:600, color:"#fbbf24", marginBottom:"0.2rem" }}>Directional findings — prototype evaluation harness</div>
+              <div style={{ fontSize:"0.82rem", fontWeight:600, color:"#fbbf24", marginBottom:"0.2rem" }}>Directional findings — prototype evaluation framework</div>
               <div style={{ fontSize:"0.8rem", color:"#9ca3af", lineHeight:1.65 }}>
                 9 articles and 15 queries is a small sample by production standards. Results are directional, not definitive. At scale, rankings may shift. Latency figures reflect <strong style={{ color:"#f9fafb" }}>retrieval only</strong>, not end-to-end answer generation.
               </div>
@@ -230,8 +234,8 @@ export default function App() {
 
         {/* Method & Metrics */}
         <SectionBlock id="Method & Metrics" title="Method & Metrics" subtitle="How the evaluation was designed and how scores are calculated." sectionRefs={sectionRefs}>
-          <div style={{ fontSize:"0.88rem", color:"#9ca3af", lineHeight:1.8, marginBottom:"1.5rem", maxWidth:"820px" }}>
-            <span style={{ color:"#f9fafb", fontWeight:600 }}>Method.</span> Compared fixed, sliding window, and semantic chunking using MiniLM and MPNet embeddings across 15 Artemis-related queries spanning 8 query types: factual lookup, technical, multi-hop, comparison, ambiguous, risk analysis, date/status, and proper noun. Each configuration was evaluated across 90 total query runs.
+          <div style={{ fontSize:"0.88rem", color:"#6b7280", lineHeight:1.8, marginBottom:"1.5rem", maxWidth:"820px" }}>
+            <Label text="Method" />Compared fixed, sliding window, and semantic chunking using MiniLM and MPNet embeddings across 15 Artemis-related queries spanning 8 query types: factual lookup, technical, multi-hop, comparison, ambiguous, risk analysis, date/status, and proper noun. Each configuration was evaluated across 90 total query runs.
           </div>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem" }}>
             {[
@@ -291,7 +295,7 @@ export default function App() {
                 </div>
               </Card>
               <div style={{ fontSize:"0.78rem", color:"#6b7280", lineHeight:1.6, padding:"0 0.25rem" }}>
-                <span style={{ color:"#9ca3af" }}>Note.</span> Scores are intended for relative comparison across configurations, not as absolute production-readiness scores. A composite of {(winner.avg_composite*100).toFixed(1)}/100 means this configuration outperformed others in this evaluation, not that it is production-ready at this score.
+                <span style={{ color:"#f9fafb", fontWeight:600 }}>Note: </span>Scores are intended for relative comparison across configurations, not as absolute production-readiness scores. A composite of {(winner.avg_composite*100).toFixed(1)}/100 means this configuration outperformed others in this evaluation, not that it is production-ready at this score.
               </div>
             </>
           )}
@@ -302,7 +306,6 @@ export default function App() {
         {/* Results */}
         <SectionBlock id="Results" title="Results" sectionRefs={sectionRefs}>
 
-          {/* Key findings */}
           <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"1rem", marginBottom:"1.5rem" }}>
             {findings.map(f=>(
               <Card key={f.n} style={{ display:"flex", gap:"1.25rem", alignItems:"flex-start", borderColor:`${f.color}33` }}>
@@ -315,7 +318,6 @@ export default function App() {
             ))}
           </div>
 
-          {/* Latency hero stats */}
           {fastest && slowest && (
             <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem", marginBottom:"1.5rem" }}>
               {[
@@ -495,7 +497,7 @@ export default function App() {
         <Divider/>
 
         {/* Next Steps */}
-        <SectionBlock id="Next Steps" title="Next Steps" subtitle="This is a prototype evaluation harness. Here is what a production-grade version would include." sectionRefs={sectionRefs}>
+        <SectionBlock id="Next Steps" title="Next Steps" subtitle="This is a prototype evaluation framework. Here is what a production-grade version would include." sectionRefs={sectionRefs}>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem" }}>
             {[
               { n:"01", color:"#6366f1", title:"Expand to 100+ documents",          body:"Current 9-article corpus limits generalizability. A larger corpus would stress-test chunking boundaries across more varied content and domains." },
@@ -503,7 +505,7 @@ export default function App() {
               { n:"03", color:"#38bdf8", title:"Add human-labeled expected answers",  body:"Replace keyword-based grounding with human-labeled ground truth or an LLM judge to more rigorously separate retrieval quality from generation quality." },
               { n:"04", color:"#f59e0b", title:"Separate retrieval from generation",  body:"Add an LLM generation step to measure end-to-end answer quality. Current metrics evaluate retrieval only. Grounding is a proxy, not a full answer-quality signal." },
               { n:"05", color:"#f87171", title:"Test reranking and hybrid retrieval", body:"Add a reranker as a fourth configuration. Test metadata filtering and hybrid retrieval. These often close the gap between chunking strategies in production." },
-              { n:"06", color:"#e879f9", title:"Track failure modes over time",       body:"Wrap the harness in a CI pipeline so retrieval quality is automatically measured on every corpus or configuration change. Failure mode tracking reveals regressions early." }
+              { n:"06", color:"#e879f9", title:"Track failure modes over time",       body:"Wrap the framework in a CI pipeline so retrieval quality is automatically measured on every corpus or configuration change. Failure mode tracking reveals regressions early." }
             ].map(s=>(
               <Card key={s.n} style={{ borderColor:`${s.color}33`, padding:"1.25rem" }}>
                 <div style={{ fontSize:"0.68rem", fontWeight:700, color:s.color, letterSpacing:"0.05em", marginBottom:"0.5rem" }}>{s.n}</div>
