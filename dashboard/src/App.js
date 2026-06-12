@@ -275,7 +275,7 @@ const latencySpread = fastest && slowest
     { title:"Latency spreads wider than quality",
       body:`Composite scores range from ${(sorted[sorted.length-1]?.avg_composite*100).toFixed(1)} to ${(winner.avg_composite*100).toFixed(1)}, a narrow band. Latency ranges from ${fastest.avg_latency_ms.toFixed(1)}ms to ${slowest.avg_latency_ms.toFixed(1)}ms, a ${latencySpread}x spread. Fixed chunking is the slowest with no retrieval-quality advantage.` },
     { title:"Query complexity exposed real differences",
-      body:`Simple factual queries showed small differences between configurations. Multi-hop and comparison queries widened the gap significantly. Benchmark against your actual query distribution before selecting a production configuration.` },
+      body:`Simple factual queries showed small differences between configurations. Multi-hop and comparison queries made the gap more visible. Benchmark against your actual query distribution before selecting a production configuration.` },
     { title:"Low grounding reveals a different problem",
       body:`Low relevance points to retrieval failure. Low grounding with acceptable relevance suggests the chunk may be related but insufficient to support the answer. They are different failure modes requiring different fixes.` }
   ] : [];
