@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, LabelList } from "recharts";
 
 const C_RELEVANCE = "#3b82f6";
 const C_GROUNDING = "#10b981";
@@ -176,14 +176,6 @@ const SectionBlock = ({ id, title, subtitle, children, sectionRefs }) => (
     {children}
   </div>
 );
-
-const tooltipStyle = {
-  background:"#0d0d0d",
-  border:"2px solid #ffffff",
-  borderRadius:"8px",
-  fontSize:"0.8rem",
-  color:"#ffffff"
-};
 
 const PAGE_SIZE = 15;
 
@@ -471,8 +463,7 @@ export default function App() {
                 <BarChart data={barData} layout="vertical" margin={{ right:55, left:0, top:0, bottom:0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a"/>
                   <XAxis type="number" domain={[0,60]} stroke="#333" tick={{ fontSize:10, fill:"#ffffff" }}/>
-                  <YAxis type="category" dataKey="name" stroke="#333" tick={{ fontSize:9, fill:"#94a3b8" }} width:135}/>
-                  <Tooltip contentStyle={tooltipStyle}/>
+                  <YAxis type="category" dataKey="name" stroke="#333" tick={{ fontSize:9, fill:"#94a3b8" }} width={135}/>
                   <Bar dataKey="Composite" radius={[0,4,4,0]}>
                     {barData.map((d,i)=><Cell key={i} fill={d.color}/>)}
                     <LabelList dataKey="Composite" position="right" style={{ fill:"#ffffff", fontSize:"11px", fontWeight:600 }}/>
@@ -491,7 +482,6 @@ export default function App() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a"/>
                   <XAxis type="number" stroke="#333" tick={{ fontSize:10, fill:"#ffffff" }}/>
                   <YAxis type="category" dataKey="name" stroke="#333" tick={{ fontSize:9, fill:"#94a3b8" }} width={135}/>
-                  <Tooltip contentStyle={tooltipStyle}/>
                   <Bar dataKey="Latency" radius={[0,4,4,0]}>
                     {barData.map((d,i)=><Cell key={i} fill={d.color}/>)}
                     <LabelList dataKey="Latency" position="right" style={{ fill:"#ffffff", fontSize:"11px", fontWeight:600 }} formatter={v=>`${v}ms`}/>
@@ -543,9 +533,8 @@ export default function App() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#1a1a1a"/>
                 <XAxis type="number" domain={[0,60]} stroke="#333" tick={{ fontSize:10, fill:"#ffffff" }}/>
                 <YAxis type="category" dataKey="type" stroke="#333" tick={{ fontSize:9, fill:"#ffffff" }} width={110}/>
-                <Tooltip contentStyle={tooltipStyle} formatter={v=>[`${v}/100`,"Avg composite"]}/>
                 <Bar dataKey="avg" fill={C_RELEVANCE} radius={[0,4,4,0]}>
-                  <LabelList dataKey="avg" position="right" style={{ fill:"#ffffff", fontSize:"11px", fontWeight:600 }} formatter={v=>`${v}`}/>
+                  <LabelList dataKey="avg" position="right" style={{ fill:"#ffffff", fontSize:"11px", fontWeight:600 }}/>
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -674,7 +663,7 @@ export default function App() {
         </SectionBlock>
 
         <div style={{ textAlign:"center", color:"#333", fontSize:"0.76rem", paddingTop:"1rem" }}>
-          Built by Eman Rashdi · RAG Evaluation Framework · 2026 ·{" "}
+          Built by Eman R. · RAG Evaluation Framework · 2026 ·{" "}
           <a href="https://github.com/er5995/rag-eval" style={{ color:ACCENT, textDecoration:"none" }}>GitHub</a>
         </div>
 
