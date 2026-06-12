@@ -6,7 +6,7 @@ A lightweight framework for comparing RAG retrieval configurations before scalin
 
 ## Purpose
 
-As a Technical Program Manager, evaluation is not optional. It is essential to have a repeatable framework to measure, visualize, and understand failures for decision making.
+RAG systems need repeatable evaluation before scaling. This project measures retrieval quality, latency, and failure modes so configuration decisions are based on evidence, not intuition.
 
 This project builds that framework for RAG retrieval. The goal was to compare configurations across quality, latency, and grounding, surface where retrieval fails and why, and make those findings visible enough to drive real decisions before scaling a knowledge assistant.
 
@@ -57,14 +57,14 @@ Scores are intended for relative comparison across configurations, not as absolu
 
 | Rank | Configuration | Composite | Latency | Assessment |
 |---|---|---|---|---|
-| 1 | Sliding + MiniLM | 40.4/100 | 4.7ms | Best overall |
+| 1 | Sliding + MiniLM | 40.4/100 | 4.6ms | Best overall |
 | 2 | Semantic + MiniLM | 39.5/100 | 4.6ms | Close second |
 | 3 | Semantic + MPNet | 37.5/100 | 10.3ms | Moderate latency |
 | 4 | Sliding + MPNet | 37.3/100 | 9.9ms | Moderate latency |
 | 5 | Fixed + MiniLM | 37.1/100 | 17.6ms | Slow, no retrieval-quality advantage |
 | 6 | Fixed + MPNet | 35.6/100 | 23.9ms | Slowest and weakest |
 
-The main decision signal was not only the top composite score. Sliding + MiniLM and Semantic + MiniLM were close on quality, but both were much faster than fixed chunking.
+The main decision signal was not only the top composite score. Sliding + MiniLM and Semantic + MiniLM were close on quality, but both were much faster than fixed chunking. The latency spread between fastest and slowest was 5.2x.
 
 ---
 
@@ -84,7 +84,7 @@ Not every retrieval failed the same way. The dashboard surfaces six distinct fai
 ## Dashboard Features
 
 - Compare configurations by composite score and retrieval latency
-- Filter query-level results by configuration and query type
+- Filter query-level results by configuration, query type, and failure mode
 - Inspect failure modes for individual queries
 - Review retrieved chunks to understand why a result passed or failed
 
@@ -123,7 +123,7 @@ This is a prototype evaluation framework. 9 articles and 15 queries is a small s
 ## Next Steps
 
 - Expand to 100+ documents and 1,000+ evaluation queries
-- Add human-labeled expected answers to replace keyword-based grounding
-- Separate retrieval quality from generated answer quality. One approach: use an LLM to generate an evaluation set, then have a human reviewer score the outputs for correctness and groundedness. However, LLM-generated sets can miss edge cases. Incorporating real search results and user queries closes that gap further
+- Create a human-reviewed golden evaluation set, then use an LLM judge to scale evaluation of answer correctness and groundedness. Human review anchors quality; the LLM scales it
+- Separate retrieval quality from generated answer quality
 - Test reranking, metadata filtering, and hybrid retrieval
 - Track failure modes over time via a CI pipeline
