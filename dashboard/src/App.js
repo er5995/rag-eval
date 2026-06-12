@@ -4,7 +4,6 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 const C_RELEVANCE = "#3b82f6";
 const C_GROUNDING = "#10b981";
 const C_COMPOSITE = "#f59e0b";
-const C_LATENCY   = "#1d4ed8";
 const ACCENT      = "#8b5cf6";
 
 const CONFIG_COLORS = {
@@ -207,6 +206,7 @@ export default function App() {
   const fastest = [...summary].sort((a,b)=>a.avg_latency_ms-b.avg_latency_ms)[0];
   const slowest = [...summary].sort((a,b)=>b.avg_latency_ms-a.avg_latency_ms)[0];
 
+  // Bar charts use fixed display order (MiniLM first, then MPNet)
   const barData = BAR_ORDER
     .map(key=>summary.find(s=>s.key===key))
     .filter(Boolean)
@@ -216,6 +216,18 @@ export default function App() {
       Latency:   +s.avg_latency_ms.toFixed(2),
       color:     CONFIG_COLORS[s.key]
     }));
+
+  // Tradeoff table sorted by actual composite score descending
+  const tradeoffData = [...summary]
+    .sort((a,b)=>b.avg_composite-a.avg_composite)
+    .map(s=>({
+      name:      LABELS[s.key],
+      Composite: +(s.avg_composite*100).toFixed(1),
+      Latency:   +s.avg_latency_ms.toFixed(1),
+      color:     CONFIG_COLORS[s.key],
+      rank:      0
+    }))
+    .map((d,i)=>({...d, rank:i+1}));
 
   const queryTypes = ["all",...Array.from(new Set(Object.values(QUERY_TYPES)))];
 
@@ -235,16 +247,6 @@ export default function App() {
     .map(([type,v])=>({ type, avg:+(v.scores.reduce((a,b)=>a+b,0)/v.scores.length*100).toFixed(1) }))
     .sort((a,b)=>b.avg-a.avg);
 
-  const tradeoffData = BAR_ORDER
-    .map(key=>summary.find(s=>s.key===key))
-    .filter(Boolean)
-    .map(s=>({
-      name:      LABELS[s.key],
-      Composite: +(s.avg_composite*100).toFixed(1),
-      Latency:   +s.avg_latency_ms.toFixed(1),
-      color:     CONFIG_COLORS[s.key]
-    }));
-
   const scrollTo = (id) => {
     setActiveTab(id);
     sectionRefs.current[id]?.scrollIntoView({ behavior:"smooth" });
@@ -262,16 +264,30 @@ export default function App() {
     { color:"#B23A72", label:"Fixed" }
   ];
 
+  // Latency spread — use raw values for accuracy
+  const latencySpread = fastest && slowest
+    ? (slowest.avg_latency_ms / fastest.avg_latency_ms).toFixed(1)
+    : "5.2";
+
   const findings = winner && fastest ? [
     { title:"Best overall configuration",
       body:`In this prototype, ${winner.label} achieved the highest composite score (${(winner.avg_composite*100).toFixed(1)}/100). The smaller MiniLM model matched or exceeded MPNet on this corpus. Model size does not automatically improve retrieval on small domain-specific corpora.` },
     { title:"Latency spreads wider than quality",
-      body:`Composite scores range from ${(sorted[sorted.length-1]?.avg_composite*100).toFixed(1)} to ${(winner.avg_composite*100).toFixed(1)}, a narrow band. Latency ranges from ${fastest?.avg_latency_ms.toFixed(1)}ms to ${slowest?.avg_latency_ms.toFixed(1)}ms, a ${(slowest?.avg_latency_ms/fastest?.avg_latency_ms).toFixed(1)}x spread. Fixed chunking is the slowest with no quality benefit.` },
+      body:`Composite scores range from ${(sorted[sorted.length-1]?.avg_composite*100).toFixed(1)} to ${(winner.avg_composite*100).toFixed(1)}, a narrow band. Latency ranges from ${fastest.avg_latency_ms.toFixed(1)}ms to ${slowest.avg_latency_ms.toFixed(1)}ms, a ${latencySpread}x spread. Fixed chunking is the slowest with no retrieval-quality advantage.` },
     { title:"Query complexity exposed real differences",
       body:`Simple factual queries showed small differences between configurations. Multi-hop and comparison queries widened the gap significantly. Benchmark against your actual query distribution before selecting a production configuration.` },
     { title:"Low grounding reveals a different problem",
       body:`Low relevance points to retrieval failure. Low grounding with acceptable relevance suggests the chunk may be related but insufficient to support the answer. They are different failure modes requiring different fixes.` }
   ] : [];
+
+  // Assessment labels — consistent, no overclaiming
+  const getAssessment = (d, i) => {
+    if (i === 0) return { label:"Best overall, high quality, low latency", color:C_GROUNDING };
+    if (d.Latency > 15) return { label:"Slow, no retrieval-quality advantage", color:"#ef4444" };
+    if (d.Composite >= 39) return { label:"Strong quality, low latency", color:C_GROUNDING };
+    if (d.Composite >= 37) return { label:"Moderate quality, moderate latency", color:C_COMPOSITE };
+    return { label:"Lower composite, higher latency", color:"#94a3b8" };
+  };
 
   return (
     <div style={{ fontFamily:"-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif", background:"#0d0d0d", minHeight:"100vh", color:"#e2e8f0" }}>
@@ -309,7 +325,7 @@ export default function App() {
             A lightweight framework to compare retrieval configurations, identify tradeoffs, inspect failure modes, and choose a practical starting point before scaling a knowledge assistant.
           </p>
           <p style={{ fontSize:"0.9rem", color:"#94a3b8", lineHeight:1.8, margin:"0 0 0.75rem" }}>
-            <Label text="Purpose" />As a Technical Program Manager, evaluation is not optional. It is essential to have a repeatable framework to measure, visualize, and understand failures for decision making. This project builds that framework for RAG retrieval.
+            <Label text="Purpose" />RAG systems need repeatable evaluation before scaling. This project measures retrieval quality, latency, and failure modes so configuration decisions are based on evidence, not intuition.
           </p>
           <p style={{ fontSize:"0.9rem", color:"#94a3b8", lineHeight:1.8, margin:"0 0 2rem" }}>
             <Label text="Outcome" />In this prototype, sliding window chunking with MiniLM produced the strongest composite results. Fixed chunking is consistently the weakest, up to 5x slower with no retrieval-quality advantage. Query complexity exposed differences that simple factual queries did not.
@@ -431,7 +447,7 @@ export default function App() {
               {[
                 { label:"Fastest retrieval", value:`${fastest.avg_latency_ms.toFixed(1)}ms`, sub:fastest.label, color:C_GROUNDING },
                 { label:"Slowest retrieval", value:`${slowest.avg_latency_ms.toFixed(1)}ms`, sub:slowest.label, color:"#ef4444" },
-                { label:"Latency spread",    value:`${(slowest.avg_latency_ms/fastest.avg_latency_ms).toFixed(1)}x`, sub:"slowest vs fastest", color:C_COMPOSITE }
+                { label:"Latency spread",    value:`${latencySpread}x`, sub:"slowest vs fastest", color:C_COMPOSITE }
               ].map(s=>(
                 <div key={s.label} style={{ background:"#111", border:"1px solid #222", borderTop:`2px solid ${s.color}`, borderRadius:"12px", padding:"1.25rem" }}>
                   <div style={{ fontSize:"0.68rem", color:"#64748b", textTransform:"uppercase", letterSpacing:"0.07em", marginBottom:"0.5rem" }}>{s.label}</div>
@@ -465,7 +481,7 @@ export default function App() {
             <Card>
               <ChartLabel
                 title="Retrieval Latency (ms)"
-                subtitle="Retrieval only, not end-to-end generation. Fixed chunking is up to 5x slower with no quality benefit."
+                subtitle="Retrieval only, not end-to-end generation. Fixed chunking is up to 5x slower with no retrieval-quality advantage."
               />
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={barData} layout="vertical" margin={{ right:10 }}>
@@ -484,7 +500,7 @@ export default function App() {
           <Card style={{ marginBottom:"1.75rem" }}>
             <ChartLabel
               title="Quality vs Latency — Configuration Tradeoff"
-              subtitle="Ranked by composite score. The ideal configuration maximizes quality while minimizing latency."
+              subtitle="Ranked by composite score. The ideal configuration maximizes retrieval quality while minimizing latency."
             />
             <div className="table-wrap">
               <table style={{ width:"100%", borderCollapse:"collapse", fontSize:"0.82rem" }}>
@@ -497,15 +513,14 @@ export default function App() {
                 </thead>
                 <tbody>
                   {tradeoffData.map((d,i)=>{
-                    const a  = i===0 ? "Best overall, high quality, low latency" : d.Latency>15 ? "Slow, no quality advantage" : d.Composite>38 ? "Good quality, moderate latency" : "Low quality, moderate latency";
-                    const ac = i===0 ? C_GROUNDING : d.Latency>15 ? "#ef4444" : C_COMPOSITE;
+                    const { label:aLabel, color:aColor } = getAssessment(d, i);
                     return (
                       <tr key={d.name} style={{ borderBottom:"1px solid #111" }}>
-                        <td style={{ padding:"0.7rem 0.75rem", color:"#64748b", fontWeight:700 }}>#{i+1}</td>
+                        <td style={{ padding:"0.7rem 0.75rem", color:"#64748b", fontWeight:700 }}>#{d.rank}</td>
                         <td style={{ padding:"0.7rem 0.75rem" }}><span style={{ color:d.color, fontWeight:600 }}>{d.name}</span></td>
                         <td style={{ padding:"0.7rem 0.75rem", color:"#ffffff", fontVariantNumeric:"tabular-nums" }}>{d.Composite}/100</td>
                         <td style={{ padding:"0.7rem 0.75rem", color:"#ffffff", fontVariantNumeric:"tabular-nums" }}>{d.Latency}ms</td>
-                        <td style={{ padding:"0.7rem 0.75rem" }}><span style={{ color:ac, fontSize:"0.79rem" }}>{a}</span></td>
+                        <td style={{ padding:"0.7rem 0.75rem" }}><span style={{ color:aColor, fontSize:"0.79rem" }}>{aLabel}</span></td>
                       </tr>
                     );
                   })}
@@ -630,12 +645,18 @@ export default function App() {
         <SectionBlock id="Next Steps" title="Next Steps" subtitle="This is a prototype evaluation framework. Here is what a production-grade version would include." sectionRefs={sectionRefs}>
           <div className="grid-2">
             {[
-              { n:"01", title:"Expand to 100+ documents",          body:"Current 9-article corpus limits generalizability. A larger corpus would stress-test chunking boundaries across more varied content and domains." },
-              { n:"02", title:"Add 1,000+ evaluation queries",      body:"Add synthetic and human-curated queries to stress-test edge cases: temporal, multi-entity, negation, and out-of-scope queries across all types." },
-              { n:"03", title:"Add human-labeled expected answers",  body:"Replace keyword-based grounding with human-labeled ground truth or an LLM judge to more rigorously separate retrieval quality from generation quality." },
-              { n:"04", title:"Separate retrieval from generation",  body:"Add an LLM generation step to measure end-to-end answer quality. One approach: generate a golden evaluation set with an LLM, then have a human reviewer validate it. LLM-generated sets can miss edge cases, so incorporating real search results and user queries closes that gap further." },
-              { n:"05", title:"Test reranking and hybrid retrieval", body:"Add a reranker as a fourth configuration. Test metadata filtering and hybrid retrieval. These often close the gap between chunking strategies in production." },
-              { n:"06", title:"Track failure modes over time",       body:"Wrap the framework in a CI pipeline so retrieval quality is automatically measured on every corpus or configuration change. Failure mode tracking reveals regressions early." }
+              { n:"01", title:"Expand to 100+ documents",
+                body:"Current 9-article corpus limits generalizability. A larger corpus would stress-test chunking boundaries across more varied content and domains." },
+              { n:"02", title:"Add 1,000+ evaluation queries",
+                body:"Add synthetic and human-curated queries to stress-test edge cases: temporal, multi-entity, negation, and out-of-scope queries across all types." },
+              { n:"03", title:"Build a human-reviewed golden evaluation set",
+                body:"Create a human-reviewed golden evaluation set, then use an LLM judge to scale evaluation of answer correctness and groundedness. Human review anchors quality; the LLM scales it." },
+              { n:"04", title:"Separate retrieval from generation",
+                body:"Add an LLM generation step to measure end-to-end answer quality. Current metrics evaluate retrieval only. Grounding is a proxy, not a full answer-quality signal." },
+              { n:"05", title:"Test reranking and hybrid retrieval",
+                body:"Add a reranker as a fourth configuration. Test metadata filtering and hybrid retrieval. These often close the gap between chunking strategies in production." },
+              { n:"06", title:"Track failure modes over time",
+                body:"Wrap the framework in a CI pipeline so retrieval quality is automatically measured on every corpus or configuration change. Failure mode tracking reveals regressions early." }
             ].map(s=>(
               <Card key={s.n}>
                 <div style={{ fontSize:"0.68rem", fontWeight:700, color:ACCENT, letterSpacing:"0.05em", marginBottom:"0.4rem" }}>{s.n}</div>
