@@ -265,9 +265,9 @@ export default function App() {
   ];
 
   // Latency spread — use raw values for accuracy
-  const latencySpread = fastest && slowest
-    ? (slowest.avg_latency_ms / fastest.avg_latency_ms).toFixed(1)
-    : "5.2";
+const latencySpread = fastest && slowest
+  ? (Math.floor(slowest.avg_latency_ms / fastest.avg_latency_ms * 10) / 10).toFixed(1)
+  : "5.2";
 
   const findings = winner && fastest ? [
     { title:"Best overall configuration",
