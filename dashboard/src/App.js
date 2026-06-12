@@ -171,7 +171,7 @@ const SectionBlock = ({ id, title, subtitle, children, sectionRefs }) => (
       <div style={{ marginBottom:"1.75rem" }}>
         <h2 style={{ fontSize:"1.1rem", fontWeight:700, color:"#ffffff", margin:"0 0 0.4rem", letterSpacing:"0.04em", textTransform:"uppercase" }}>{title}</h2>
         <div style={{ width:"2rem", height:"2px", background:ACCENT, borderRadius:"1px" }}/>
-        {subtitle && <p style={{ fontSize:"0.84rem", color:"#94a3b8", margin:"0.75rem 0 0", lineHeight:1.65, maxWidth:"720px" }}>{subtitle}</p>}
+        {subtitle && <p style={{ fontSize:"0.84rem", color:"#94a3b8", margin:"0.75rem 0 0", lineHeight:1.65 }}>{subtitle}</p>}
       </div>
     )}
     {children}
@@ -305,13 +305,13 @@ export default function App() {
           <h1 style={{ fontSize:"3.2rem", fontWeight:700, color:"#ffffff", margin:"0 0 1.5rem", letterSpacing:"-0.04em", lineHeight:1.1 }}>
             🚀 Artemis RAG<br/>Evaluation Framework
           </h1>
-          <p style={{ fontSize:"1.05rem", color:"#94a3b8", lineHeight:1.85, margin:"0 0 1.25rem", maxWidth:"620px" }}>
+          <p style={{ fontSize:"1.05rem", color:"#94a3b8", lineHeight:1.85, margin:"0 0 1.25rem" }}>
             A lightweight framework to compare retrieval configurations, identify tradeoffs, inspect failure modes, and choose a practical starting point before scaling a knowledge assistant.
           </p>
-          <p style={{ fontSize:"0.9rem", color:"#94a3b8", lineHeight:1.8, margin:"0 0 0.75rem", maxWidth:"620px" }}>
+          <p style={{ fontSize:"0.9rem", color:"#94a3b8", lineHeight:1.8, margin:"0 0 0.75rem" }}>
             <Label text="Purpose" />As a Technical Program Manager, evaluation is not optional. It is essential to have a repeatable framework to measure, visualize, and understand failures for decision making. This project builds that framework for RAG retrieval.
           </p>
-          <p style={{ fontSize:"0.9rem", color:"#94a3b8", lineHeight:1.8, margin:"0 0 2rem", maxWidth:"620px" }}>
+          <p style={{ fontSize:"0.9rem", color:"#94a3b8", lineHeight:1.8, margin:"0 0 2rem" }}>
             <Label text="Outcome" />In this prototype, sliding window chunking with MiniLM produced the strongest composite results. Fixed chunking is consistently the weakest, up to 5x slower with no retrieval-quality advantage. Query complexity exposed differences that simple factual queries did not.
           </p>
           <div style={{ display:"flex", gap:"0.5rem", flexWrap:"wrap", marginBottom:"2rem" }}>
@@ -319,7 +319,7 @@ export default function App() {
               <span key={t} style={{ background:"#111", border:"1px solid #222", color:"#94a3b8", borderRadius:"20px", padding:"4px 14px", fontSize:"0.76rem" }}>{t}</span>
             ))}
           </div>
-          <div style={{ background:"#111", border:"1px solid #222", borderLeft:"3px solid #f59e0b", borderRadius:"10px", padding:"1rem 1.25rem", display:"flex", gap:"0.75rem", maxWidth:"620px" }}>
+          <div style={{ background:"#111", border:"1px solid #222", borderLeft:"3px solid #f59e0b", borderRadius:"10px", padding:"1rem 1.25rem", display:"flex", gap:"0.75rem" }}>
             <span style={{ fontSize:"0.9rem", marginTop:"1px", flexShrink:0 }}>⚠️</span>
             <div>
               <div style={{ fontSize:"0.8rem", fontWeight:600, color:"#fbbf24", marginBottom:"0.25rem" }}>Directional findings — prototype evaluation framework</div>
@@ -334,7 +334,7 @@ export default function App() {
 
         {/* Method & Metrics */}
         <SectionBlock id="Method & Metrics" title="Method & Metrics" subtitle="How the evaluation was designed and how scores are calculated." sectionRefs={sectionRefs}>
-          <p style={{ fontSize:"0.9rem", color:"#94a3b8", lineHeight:1.8, marginBottom:"1.75rem", maxWidth:"680px" }}>
+          <p style={{ fontSize:"0.9rem", color:"#94a3b8", lineHeight:1.8, marginBottom:"1.75rem" }}>
             <Label text="Method" />Compared fixed, sliding window, and semantic chunking using MiniLM and MPNet embeddings across 15 Artemis-related queries spanning 8 query types: factual lookup, technical, multi-hop, comparison, ambiguous, risk analysis, date/status, and proper noun. Each configuration was evaluated across 90 total query runs.
           </p>
           <div className="grid-metrics">
@@ -387,7 +387,7 @@ export default function App() {
                   <div>
                     <div style={{ fontSize:"0.7rem", color:"#64748b", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:"0.5rem" }}>Starting point before production scaling</div>
                     <div style={{ fontSize:"1.7rem", fontWeight:700, color:"#ffffff", letterSpacing:"-0.02em", marginBottom:"0.85rem" }}>{winner.label}</div>
-                    <div style={{ fontSize:"0.88rem", color:"#94a3b8", lineHeight:1.8, maxWidth:"500px" }}>
+                    <div style={{ fontSize:"0.88rem", color:"#94a3b8", lineHeight:1.8 }}>
                       Sliding window chunking preserves context across paragraph boundaries, improving retrieval on complex queries. MiniLM matched or exceeded MPNet on this corpus. Larger models do not automatically outperform on domain-specific content at small scale. Recommended before adding reranking, metadata filtering, or hybrid retrieval.
                     </div>
                   </div>
@@ -535,7 +535,6 @@ export default function App() {
 
         {/* Failure Analysis */}
         <SectionBlock id="Failure Analysis" title="Failure Analysis" subtitle="Click any row to inspect the retrieved chunk. Failure modes are assigned automatically based on score thresholds. Borderline cases may not match human judgment. This is a known limitation of proxy-based evaluation." sectionRefs={sectionRefs}>
-
           <div style={{ marginBottom:"1.25rem" }}>
             <div style={{ fontSize:"0.72rem", color:"#64748b", textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:"0.6rem" }}>Failure mode legend — hover for details</div>
             <div style={{ display:"flex", gap:"1rem", flexWrap:"wrap" }}>
