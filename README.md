@@ -123,8 +123,13 @@ This is a prototype evaluation framework. 9 articles and 15 queries is a small s
 
 ## Next Steps
 
-- Expand to 100+ documents and 1,000+ evaluation queries
-- Create a human-reviewed golden evaluation set, then use an LLM judge to scale evaluation of answer correctness and groundedness. Human review anchors quality; the LLM scales it
-- Separate retrieval quality from generated answer quality
-- Test reranking, metadata filtering, and hybrid retrieval
-- Track failure modes over time via a CI pipeline
+## Next Steps
+
+* Expand the evaluation corpus to 100+ documents and 1,000+ queries.
+* Create a human-reviewed golden evaluation set with labeled relevant chunks and expected answers.
+* Add standard retrieval metrics such as Recall@K, Precision@K, MRR, and nDCG alongside the directional composite score.
+* Add an LLM generation layer and evaluate retrieval quality separately from answer correctness, completeness, and groundedness.
+* Use an LLM judge to scale answer-level evaluation after calibrating it against the human-reviewed golden set.
+* Test reranking, metadata filtering, and hybrid retrieval.
+* Track quality metrics, latency, and failure-mode regressions through a CI pipeline.
+
