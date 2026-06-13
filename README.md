@@ -123,8 +123,6 @@ This is a prototype evaluation framework. 9 articles and 15 queries is a small s
 
 ## Next Steps
 
-## Next Steps
-
 * Expand the evaluation corpus to 100+ documents and 1,000+ queries.
 * Create a human-reviewed golden evaluation set with labeled relevant chunks and expected answers.
 * Add standard retrieval metrics such as Recall@K, Precision@K, MRR, and nDCG alongside the directional composite score.
