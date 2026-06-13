@@ -123,11 +123,11 @@ This is a prototype evaluation framework. 9 articles and 15 queries is a small s
 
 ## Next Steps
 
-* Expand the evaluation corpus to 100+ documents and 1,000+ queries.
-* Create a human-reviewed golden evaluation set with labeled relevant chunks and expected answers.
-* Add standard retrieval metrics such as Recall@K, Precision@K, MRR, and nDCG alongside the directional composite score.
-* Add an LLM generation layer and evaluate retrieval quality separately from answer correctness, completeness, and groundedness.
-* Use an LLM judge to scale answer-level evaluation after calibrating it against the human-reviewed golden set.
-* Test reranking, metadata filtering, and hybrid retrieval.
-* Track quality metrics, latency, and failure-mode regressions through a CI pipeline.
+* Expand the corpus to 100+ documents and the evaluation set to 1,000+ queries to test whether findings hold at greater scale.
+* Establish a human-reviewed golden set with labeled relevant chunks and expected answers to create a trusted evaluation baseline.
+* Use that baseline to introduce standard retrieval metrics such as Recall@K, Precision@K, MRR, and nDCG.
+* Add an LLM generation layer and define separate success criteria for retrieval quality, answer correctness, completeness, and groundedness.
+* Use an LLM judge to scale answer-level evaluation after calibrating it against human review.
+* Evaluate retrieval improvements such as reranking, metadata filtering, and hybrid search, comparing their impact on quality, latency, and implementation complexity.
+* Define production-readiness thresholds and track quality, latency, and failure-mode regressions through a CI pipeline.
 
