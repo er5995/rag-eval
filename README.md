@@ -2,6 +2,8 @@
 
 A lightweight framework for comparing RAG retrieval configurations before scaling a knowledge assistant.
 
+Link to live dashbaord (best viewed on desktop): https://rag-eval-five.vercel.app
+
 ---
 
 ## Purpose
