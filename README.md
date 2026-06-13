@@ -49,6 +49,7 @@ dashboard/        →   React dashboard to visualize results and inspect failure
 | Grounding | Whether the chunk contains terms likely to support the answer. This is a proxy, not proof of correctness. In practice, keyword overlap only gets you so far. This is a known limitation. A more rigorous approach would use an LLM judge or human-labeled ground truth to verify whether the chunk actually answers the question. That is the next step |
 | Composite | 50% relevance + 30% grounding + 20% coverage |
 
+Coverage measures whether the retrieved chunk contains enough of the expected information to answer the query.
 Scores are intended for relative comparison across configurations, not as absolute production-readiness scores.
 
 ---
